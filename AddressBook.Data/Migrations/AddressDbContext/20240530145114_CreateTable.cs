@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AddressBook.Data.Migrations.AddressDbContext
 {
     /// <inheritdoc />
-    public partial class CreateDepartmentAndJob : Migration
+    public partial class CreateTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -42,6 +42,30 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                 {
                     table.PrimaryKey("PK_Jobs", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Persons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Mobile = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    Address_Street = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Address_City = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Address_State = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Address_PostalCode = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Persons", x => x.Id);
+                });
         }
 
         /// <inheritdoc />
@@ -52,6 +76,9 @@ namespace AddressBook.Data.Migrations.AddressDbContext
 
             migrationBuilder.DropTable(
                 name: "Jobs");
+
+            migrationBuilder.DropTable(
+                name: "Persons");
         }
     }
 }

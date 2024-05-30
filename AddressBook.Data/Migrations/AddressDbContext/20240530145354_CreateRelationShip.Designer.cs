@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AddressBook.Data.Migrations.AddressDbContext
 {
     [DbContext(typeof(AddressBookDbContext))]
-    [Migration("20240530121436_DepartmentJobRS")]
-    partial class DepartmentJobRS
+    [Migration("20240530145354_CreateRelationShip")]
+    partial class CreateRelationShip
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,7 +160,7 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         .WithMany("Persons")
                         .HasForeignKey("DepartmentId");
 
-                    b.OwnsOne("AddressBook.Domain.Models.Address", "Address", b1 =>
+                    b.OwnsOne("AddressBook.Domain.Models.Location", "Address", b1 =>
                         {
                             b1.Property<int>("PersonId")
                                 .HasColumnType("int");
