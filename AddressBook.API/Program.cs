@@ -1,5 +1,6 @@
 
 using AddressBook.API.Extensions;
+using AddressBook.API.MiddleWares;
 
 namespace AddressBook.API
 {
@@ -15,17 +16,14 @@ namespace AddressBook.API
             builder.Services.AddSwaggerDocumentation();
             var app = builder.Build();
             app.UseStaticFiles();
-
+            // this is used to handle 404 endpoints
+            app.UseMiddleware<ExceptionMiddleWare>();
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
             app.UseSwaggerDocumentation();
-
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }

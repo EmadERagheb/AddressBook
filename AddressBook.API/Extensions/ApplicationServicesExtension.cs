@@ -1,4 +1,6 @@
-﻿using AddressBook.Data.Contexts;
+﻿using AddressBook.API.Errors;
+using AddressBook.Data.Contexts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AddressBook.API.Extensions
@@ -20,6 +22,21 @@ namespace AddressBook.API.Extensions
                     options.EnableDetailedErrors();
                 };
             });
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var error = actionContext.ModelState.Where(e => e.Value.Errors.Count > 0)
+                     .SelectMany(e => e.Value.Errors)
+                     .Select(e => e.ErrorMessage).ToArray();
+                    var errorResponse = new APIValidationErrorResponse(error);
+                    return new BadRequestObjectResult(errorResponse);
+                };
+
+            }
+           );
+
             return services;
 
         }
