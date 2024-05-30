@@ -1,5 +1,6 @@
 ﻿using AddressBook.API.Errors;
 using AddressBook.Data.Contexts;
+using AddressBook.Data.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +37,9 @@ namespace AddressBook.API.Extensions
 
             }
            );
+            #region IOC
+            services.AddAutoMapper(typeof(MapperProfile));
+            #endregion
 
             return services;
 

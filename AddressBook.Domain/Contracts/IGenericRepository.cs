@@ -14,7 +14,7 @@ namespace AddressBook.Domain.Contracts
         Task<List<TResult>> GetAllAsync<TResult>(int pageNmuber,
             int pageSize, Expression<Func<T, bool>?> filter = null, Expression<Func<T, object>?> order = null, Expression<Func<T, object>?> orderDesc = null, params string[] properties);
 
-        Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<T, bool>> filter, params string[] properties);
+        Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<T, bool>?> filter=null, params string[] properties);
         Task<int> GetCountAsync(Expression<Func<T, bool>?> filter);
 
         void Add(T entity);
