@@ -14,6 +14,7 @@ namespace AddressBook.API
             builder.Services.AddControllers();
             builder.Services.AddApplicationServices(builder.Configuration, builder.Environment);
             builder.Services.AddSwaggerDocumentation();
+
             var app = builder.Build();
             app.UseStaticFiles();
             // this is used to handle 404 endpoints

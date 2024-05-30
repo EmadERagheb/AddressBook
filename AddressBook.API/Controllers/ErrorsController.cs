@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AddressBook.API.Controllers
 {
-    [Route("error/{code}")]
+    [Route("errors/{code}")]
     [ApiExplorerSettings(IgnoreApi = true)]
 
     public class ErrorsController : ControllerBase
