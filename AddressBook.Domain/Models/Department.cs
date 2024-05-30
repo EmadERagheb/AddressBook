@@ -9,7 +9,9 @@ namespace AddressBook.Domain.Models
     public class Department:BaseDomainModel
     {
         public string Name { get; set; }
-       
+
+        public int JobId { get; set; }
+
 
         #region RS
         #region PersonDepartment
