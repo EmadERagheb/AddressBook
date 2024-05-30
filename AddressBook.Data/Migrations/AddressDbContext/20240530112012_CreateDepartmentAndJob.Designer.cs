@@ -4,6 +4,7 @@ using AddressBook.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AddressBook.Data.Migrations.AddressDbContext
 {
     [DbContext(typeof(AddressBookDbContext))]
-    partial class AddressBookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240530112012_CreateDepartmentAndJob")]
+    partial class CreateDepartmentAndJob
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,9 +36,6 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("JobId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -51,8 +51,6 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         .HasColumnType("rowversion");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("JobId");
 
                     b.ToTable("Departments");
                 });
@@ -101,9 +99,6 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -135,28 +130,11 @@ namespace AddressBook.Data.Migrations.AddressDbContext
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
-
                     b.ToTable("Persons");
-                });
-
-            modelBuilder.Entity("AddressBook.Domain.Models.Department", b =>
-                {
-                    b.HasOne("AddressBook.Domain.Models.Job", "Job")
-                        .WithMany("Departments")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("AddressBook.Domain.Models.Person", b =>
                 {
-                    b.HasOne("AddressBook.Domain.Models.Department", "Department")
-                        .WithMany("Persons")
-                        .HasForeignKey("DepartmentId");
-
                     b.OwnsOne("AddressBook.Domain.Models.Address", "Address", b1 =>
                         {
                             b1.Property<int>("PersonId")
@@ -192,18 +170,6 @@ namespace AddressBook.Data.Migrations.AddressDbContext
 
                     b.Navigation("Address")
                         .IsRequired();
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("AddressBook.Domain.Models.Department", b =>
-                {
-                    b.Navigation("Persons");
-                });
-
-            modelBuilder.Entity("AddressBook.Domain.Models.Job", b =>
-                {
-                    b.Navigation("Departments");
                 });
 #pragma warning restore 612, 618
         }

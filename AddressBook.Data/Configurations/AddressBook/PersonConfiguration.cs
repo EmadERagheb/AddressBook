@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace AddressBook.Data.Configurations.AddressBook
 {
-    //public class PersonConfiguration : IEntityTypeConfiguration<Person>
-    //{
-    //    public void Configure(EntityTypeBuilder<Person> builder)
-    //    {
-    //        builder.OwnsOne(e => e.Address);
-    //    }
-    //}
+    public class PersonConfiguration : IEntityTypeConfiguration<Person>
+    {
+        public void Configure(EntityTypeBuilder<Person> builder)
+        {
+            builder.OwnsOne(e => e.Address);
+        }
+    }
 }
