@@ -5,7 +5,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace AddressBook.Data.Reposatories
+namespace AddressBook.Data.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {

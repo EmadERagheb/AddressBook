@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AddressBook.Data.Contexts;
 using AddressBook.Domain.Models;
+using AddressBook.Domain.Contracts;
 
 namespace AddressBook.API.Controllers
 {
@@ -15,16 +16,19 @@ namespace AddressBook.API.Controllers
     public class PersonsController : ControllerBase
     {
         private readonly AddressBookDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public PersonsController(AddressBookDbContext context)
+        public PersonsController(AddressBookDbContext context,IUnitOfWork unitOfWork)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Persons
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
         {
+            _unitOfWork.Repository
             return await _context.Persons.ToListAsync();
         }
 
