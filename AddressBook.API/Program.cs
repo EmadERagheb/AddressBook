@@ -17,12 +17,12 @@ namespace AddressBook.API
 
             var app = builder.Build();
             app.UseStaticFiles();
-            // this is used to handle 404 endpoints
             app.UseMiddleware<ExceptionMiddleWare>();
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
             app.UseSwaggerDocumentation();
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
             app.Run();

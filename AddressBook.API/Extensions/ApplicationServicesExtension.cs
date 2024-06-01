@@ -1,5 +1,8 @@
 ﻿using AddressBook.API.Errors;
 using AddressBook.Data.Contexts;
+using AddressBook.Data.Helper;
+using AddressBook.Data.Repositories;
+using AddressBook.Domain.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +26,11 @@ namespace AddressBook.API.Extensions
                 };
             });
 
+            #region IOC
+            services.AddAutoMapper(typeof(MapperProfile));
+            services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            #endregion
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = actionContext =>
@@ -35,7 +43,7 @@ namespace AddressBook.API.Extensions
                 };
 
             }
-           );
+            );
 
             return services;
 

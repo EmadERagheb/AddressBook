@@ -15,7 +15,7 @@ namespace AddressBook.Data.Contexts
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(@"C:\Users\Emad\Desktop\AddressBook\AddressBook.API\appsettings.json", false, true)
+                .AddJsonFile(@"C:\Users\Emad\Desktop\AddressBook\AddressBook.API\appsettings.Development.json", false, true)
                 .Build();
             var optionBuilder = new DbContextOptionsBuilder<AddressBookDbContext>();
             optionBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));

@@ -1,4 +1,6 @@
-﻿namespace AddressBook.Domain.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AddressBook.Domain.Models
 {
     public class Person : BaseDomainModel
     {
@@ -10,8 +12,8 @@
         public string Email { get; set; }
 
         public string ImageUrl { get; set; }
-
-        public DateOnly BirthDate { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime BirthDate { get; set; }
 
         public string Street { get; set; }
         public string City { get; set; }
