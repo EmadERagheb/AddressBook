@@ -13,6 +13,7 @@ namespace AddressBook.API
 
             builder.Services.AddControllers();
             builder.Services.AddApplicationServices(builder.Configuration, builder.Environment);
+            builder.Services.AddIdentityService(builder.Configuration, builder.Environment);
             builder.Services.AddSwaggerDocumentation();
 
             var app = builder.Build();
