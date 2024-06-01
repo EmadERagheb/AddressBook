@@ -1,4 +1,6 @@
 ﻿using AddressBook.Data.Contexts;
+using AddressBook.Data.Repositories;
+using AddressBook.Domain.Contracts;
 using AddressBook.Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -43,12 +45,12 @@ namespace AddressBook.API.Extensions
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero,
                 ValidIssuer = configuration["JWTSettings:Issuer"],
-                ValidAudiences = configuration["JWTSettings:Audiences"].Split(","),
+                ValidAudience = configuration["JWTSettings:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"]))
             });
 
             services.AddAuthorization();
-            //services.AddScoped<IAuthenticationManger, AuthenticationManger>();
+            services.AddScoped<IAuthenticationManger, AuthenticationManger>();
 
 
             return services;
