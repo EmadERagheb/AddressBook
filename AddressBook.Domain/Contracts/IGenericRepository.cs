@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace AddressBook.Domain.Contracts
 {
@@ -12,9 +7,10 @@ namespace AddressBook.Domain.Contracts
         Task<TResult> GetAsync<TResult>(Expression<Func<T, bool>> filter, params string[] properties);
 
         Task<List<TResult>> GetAllAsync<TResult>(int pageNmuber,
-            int pageSize, Expression<Func<T, bool>?> filter = null, Expression<Func<T, object>?> order = null, Expression<Func<T, object>?> orderDesc = null, params string[] properties);
+        int pageSize, Expression<Func<T, bool>?> filter = null, Expression<Func<T, object>?> order = null, Expression<Func<T, object>?> orderDesc = null, params Expression<Func<T, object>>[] properties);
 
-        Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<T, bool>?> filter=null, params string[] properties);
+        Task<T> FindById(int id);
+        Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<T, bool>?> filter = null, params string[] properties);
         Task<int> GetCountAsync(Expression<Func<T, bool>?> filter);
 
         void Add(T entity);

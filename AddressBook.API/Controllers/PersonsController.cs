@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AddressBook.API.Errors;
+using AddressBook.API.QueryPrams;
+using AddressBook.Data.Contexts;
+using AddressBook.Data.Helper;
+using AddressBook.Domain.Contracts;
+using AddressBook.Domain.DTOs.Person;
+using AddressBook.Domain.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AddressBook.Data.Contexts;
-using AddressBook.Domain.Models;
-using AddressBook.Domain.Contracts;
+using System.Linq.Expressions;
 
 namespace AddressBook.API.Controllers
 {
@@ -15,62 +16,97 @@ namespace AddressBook.API.Controllers
     [ApiController]
     public class PersonsController : ControllerBase
     {
-        private readonly AddressBookDbContext _context;
+       
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public PersonsController(AddressBookDbContext context,IUnitOfWork unitOfWork)
+        public PersonsController(AddressBookDbContext context, IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+          
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         // GET: api/Persons
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
+        public async Task<ActionResult<Paging<GetPagingPersonsDTO>>> GetPersons([FromQuery] GetAllPersonsParams personsParams)
         {
-            _unitOfWork.Repository
-            return await _context.Persons.ToListAsync();
+            Expression<Func<Person, object>> sortAsc = default;
+            Expression<Func<Person, object>> sortDesc = default;
+            Expression<Func<Person, bool>> filter = p =>
+            (string.IsNullOrEmpty(personsParams.FullName) || p.FullName.ToLower().Contains(personsParams.FullName)) &&
+            (string.IsNullOrEmpty(personsParams.Email) || p.Email.Contains(personsParams.Email)) &&
+            (string.IsNullOrEmpty(personsParams.City) || p.City.ToLower().Contains(personsParams.City)) &&
+            (!personsParams.BirthDate.HasValue || p.BirthDate == personsParams.BirthDate) &&
+            (!personsParams.DepartmentId.HasValue || p.Department.Id == personsParams.DepartmentId) &&
+            (!personsParams.JobId.HasValue || p.Department.Job.Id == personsParams.JobId);
+            switch (personsParams.Sort)
+            {
+                case "nameAsc":
+                    sortAsc = p => p.FullName;
+                    break;
+                case "nameDesc":
+                    sortDesc = p => p.FullName;
+                    break;
+                default:
+                    sortAsc = p => p.FullName;
+                    break;
+            }
+            List<GetPagingPersonsDTO> persons = await _unitOfWork.Repository<Person>()
+                .GetAllAsync<GetPagingPersonsDTO>(personsParams.PageIndex, personsParams.PageSize, filter, sortAsc, sortDesc, p => p.Department, p => p.Department.Job);
+            var personsCount = await _unitOfWork.Repository<Person>().GetCountAsync(filter);
+            return Ok(new Paging<GetPagingPersonsDTO>()
+            {
+                Count = personsCount,
+                Data = persons,
+                PageIndex = personsParams.PageIndex,
+                PageSize = personsParams.PageSize
+
+            });
+
         }
 
         // GET: api/Persons/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person>> GetPerson(int id)
+        public async Task<ActionResult<GetPersonDTO>> GetPerson(int id)
         {
-            var person = await _context.Persons.FindAsync(id);
+            var person = await _unitOfWork.Repository<Person>().GetAsync<GetPersonDTO>(p => p.Id == id);
 
             if (person == null)
             {
-                return NotFound();
+                return NotFound(new APIResponse(404));
             }
 
-            return person;
+            return Ok(person);
         }
 
         // PUT: api/Persons/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPerson(int id, Person person)
+        public async Task<IActionResult> PutPerson(int id, PutPersonDTO putPersonDTO)
         {
-            if (id != person.Id)
+            if (id != putPersonDTO.Id)
             {
-                return BadRequest();
+                return BadRequest(new APIResponse(400));
             }
+            Person person = _mapper.Map<Person>(putPersonDTO);
+            _unitOfWork.Repository<Person>().Update(person);
 
-            _context.Entry(person).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+              await  _unitOfWork.CompleteAsync();
+
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PersonExists(id))
+                if (!await PersonExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new APIResponse(404));
                 }
                 else
                 {
-                    throw;
+                    return BadRequest(new APIResponse(400));
                 }
             }
 
@@ -80,33 +116,44 @@ namespace AddressBook.API.Controllers
         // POST: api/Persons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Person>> PostPerson(Person person)
+        public async Task<ActionResult<GetPersonDTO>> PostPerson( PostPersonDTO personDTO)
         {
-            _context.Persons.Add(person);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPerson", new { id = person.Id }, person);
-        }
+            var person = _mapper.Map<Person>(personDTO);
+            _unitOfWork.Repository<Person>().Add(person);
+            int result = await _unitOfWork.CompleteAsync();
+            if (result > 0)
+            {
+              
+                return CreatedAtAction("GetPerson",new {id=person.Id}, person);
+            }
+            else
+                return BadRequest(new APIResponse(400, "cant create this person"));
+
+
+        }  
+       
 
         // DELETE: api/Persons/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerson(int id)
         {
-            var person = await _context.Persons.FindAsync(id);
-            if (person == null)
+            var person = await _unitOfWork.Repository<Person>().FindById(id);
+
+            if (person is null)
             {
                 return NotFound();
             }
 
-            _context.Persons.Remove(person);
-            await _context.SaveChangesAsync();
+            _unitOfWork.Repository<Person>().Delete(person);
+            await _unitOfWork.CompleteAsync();
 
             return NoContent();
         }
 
-        private bool PersonExists(int id)
+        private async Task<bool> PersonExists(int id)
         {
-            return _context.Persons.Any(e => e.Id == id);
+            return await _unitOfWork.Repository<Person>().Exists(p => p.Id == id);
         }
     }
 }

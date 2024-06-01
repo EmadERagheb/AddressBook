@@ -26,6 +26,11 @@ namespace AddressBook.API.Extensions
                 };
             });
 
+            #region IOC
+            services.AddAutoMapper(typeof(MapperProfile));
+            services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            #endregion
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = actionContext =>
@@ -38,12 +43,7 @@ namespace AddressBook.API.Extensions
                 };
 
             }
-           );
-            #region IOC
-            services.AddAutoMapper(typeof(MapperProfile));
-            services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            #endregion
+            );
 
             return services;
 

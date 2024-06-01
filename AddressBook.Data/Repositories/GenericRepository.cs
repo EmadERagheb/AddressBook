@@ -29,8 +29,9 @@ namespace AddressBook.Data.Repositories
             }
             return await query.ProjectTo<TResult>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
         }
-        public async Task<List<TResult>> GetAllAsync<TResult>(int pageNmuber, int pageSize, Expression<Func<T, bool>?> filter = null, Expression<Func<T, object>?> order = null, Expression<Func<T, object>?> orderDesc = null, params string[] properties)
+        public async Task<List<TResult>> GetAllAsync<TResult>(int pageNmuber, int pageSize, Expression<Func<T, bool>?> filter = null, Expression<Func<T, object>?> order = null, Expression<Func<T, object>?> orderDesc = null, params Expression<Func<T, object>>[] properties)
         {
+
             IQueryable<T> query = _context.Set<T>();
             if (filter is not null)
             {
@@ -38,10 +39,13 @@ namespace AddressBook.Data.Repositories
             }
             if (properties is not null)
             {
+
                 foreach (var property in properties)
                 {
+
                     query = query.Include(property);
                 }
+
             }
             if (order is not null)
             {
@@ -51,7 +55,7 @@ namespace AddressBook.Data.Repositories
             {
                 query = query.OrderByDescending(orderDesc);
             }
-            query = query.Skip(pageSize * (pageSize - 1)).Take(pageSize);
+            query = query.Skip(pageSize * (pageNmuber - 1)).Take(pageSize);
             return await query.ProjectTo<TResult>(_mapper.ConfigurationProvider).ToListAsync();
         }
         public async Task<List<TResult>> GetAllAsync<TResult>(Expression<Func<T, bool>?> filter = null, params string[] properties)
@@ -78,15 +82,15 @@ namespace AddressBook.Data.Repositories
         public async Task<int> GetCountAsync(Expression<Func<T, bool>?> filter)
         {
             IQueryable<T> query = _context.Set<T>();
-            if(filter is not null)
+            if (filter is not null)
             {
                 query = query.Where(filter);
             }
-         return  await query.CountAsync();
+            return await query.CountAsync();
         }
         public void Add(T entity)
         {
-          _context.Entry(entity).State=EntityState.Added;
+            _context.Entry(entity).State = EntityState.Added;
         }
         public void Update(T entity)
         {
@@ -95,13 +99,12 @@ namespace AddressBook.Data.Repositories
 
         public void Delete(T entity)
         {
-            _context.Entry(entity).State= EntityState.Deleted;
+            _context.Entry(entity).State = EntityState.Deleted;
         }
 
-
-
-
-
-
+        public async Task<T> FindById(int id)
+        {
+          return await _context.Set<T>().FindAsync(id);
+        }
     }
 }
