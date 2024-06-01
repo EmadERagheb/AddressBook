@@ -8,10 +8,11 @@ using System.Reflection.Emit;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace AddressBook.Data.Contexts
 {
-    public class AddressBookIdentityDbContext:IdentityDbContext<ApplicationUser>
+    public class AddressBookIdentityDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityRoleClaim<string>, CostumeToken>
     {
         public AddressBookIdentityDbContext(DbContextOptions<AddressBookIdentityDbContext> options):base(options)
         {
