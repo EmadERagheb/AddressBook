@@ -1,13 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import {
-  Observable,
-  ReplaySubject,
-  catchError,
-  map,
-  of,
-  throwError,
-} from 'rxjs';
+import { Observable, ReplaySubject, map, of } from 'rxjs';
 import { User } from '../shared/models/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -18,7 +11,7 @@ import { TokenDTO } from '../shared/models/token-dto';
   providedIn: 'root',
 })
 export class AccountService {
-  baseURL: string = environment.apiUrl + 'Accounts/';
+  baseURL: string = environment.apiUrl + 'Accounts';
   private userSource = new ReplaySubject<null | User>(1);
   public userSource$ = this.userSource.asObservable();
   constructor(private httpClient: HttpClient, private router: Router) {}
