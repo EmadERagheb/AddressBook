@@ -5,27 +5,38 @@ import { PersonParams } from '../shared/models/person-params';
 import { PersonCard } from '../shared/models/person-card';
 import { Job } from '../shared/models/job';
 import { Department } from '../shared/models/department';
+import { Paging } from '../shared/models/paging';
+import { PersonDetails } from '../shared/models/person-details';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HomeService {
-  personEndPointURL: string = environment.apiUrl + 'Persons';
-  jobEndPoint: string = environment.apiUrl + 'Jobs';
-  DepartmentEndPoint: string = environment.apiUrl + 'Departments';
+  private personEndPointURL: string = environment.apiUrl + 'Persons';
+  private jobEndPoint: string = environment.apiUrl + 'Jobs';
+  private DepartmentEndPoint: string = environment.apiUrl + 'Departments';
 
   constructor(private httpClient: HttpClient) {}
   getAllPersons(personParams: PersonParams) {
     let params = this.buildGetAllPersonsParams(personParams);
-    return this.httpClient.get<PersonCard[]>(this.personEndPointURL, {
+    return this.httpClient.get<Paging<PersonCard[]>>(this.personEndPointURL, {
       params,
     });
   }
-  getAllJobs() {
-     return this.httpClient.get<Job[]>(this.jobEndPoint);
+  getPerson(id: number) {
+    return this.httpClient.get<PersonDetails>(
+      this.personEndPointURL + '/' + id
+    );
   }
-  getAllDepartments(){
-    return this.httpClient.get<Department[]>(this.DepartmentEndPoint) 
+  getAllJobs() {
+    return this.httpClient.get<Job[]>(this.jobEndPoint);
+  }
+  getAllDepartments(jobId: number) {
+    let params = new HttpParams();
+    if (jobId > 0) params = params.append('JobId', jobId);
+    return this.httpClient.get<Department[]>(this.DepartmentEndPoint, {
+      params,
+    });
   }
   private buildGetAllPersonsParams(personParams: PersonParams): HttpParams {
     let params = new HttpParams();
@@ -34,6 +45,8 @@ export class HomeService {
     params = params.append('Sort', personParams.sort);
     if (personParams.departmentId > 0)
       params = params.append('DepartmentId', personParams.departmentId);
+    if (personParams.jobId > 0)
+      params = params.append('JobId', personParams.jobId);
     if (personParams.fullName)
       params = params.append('FullName', personParams.fullName);
     if (personParams.email) params = params.append('Email', personParams.email);

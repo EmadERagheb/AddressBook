@@ -1,4 +1,6 @@
-﻿using AddressBook.Domain.DTOs.Person;
+﻿using AddressBook.Domain.DTOs.Departments;
+using AddressBook.Domain.DTOs.Job;
+using AddressBook.Domain.DTOs.Person;
 using AddressBook.Domain.Models;
 using AutoMapper;
 
@@ -19,6 +21,12 @@ namespace AddressBook.Data.Helper
         .ForMember(q => q.Job, o => o.MapFrom(s => s.Department.Job.Name));
             CreateMap<Person, PostPersonDTO>().ReverseMap();
             CreateMap<Person, PutPersonDTO>();
+            #endregion
+            #region Job
+            CreateMap<GetJobsDTO, Job>().ReverseMap();
+            #endregion
+            #region Department
+            CreateMap<GetDepartmentsDTO,Department>().ReverseMap(); 
             #endregion
         }
     }

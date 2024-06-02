@@ -7,6 +7,7 @@ import { FormControl, NgControl } from '@angular/forms';
   styleUrl: './text-input.component.scss'
 })
 export class TextInputComponent {
+  @Input() feedBack:boolean = true
   @Input() type = 'text';
   @Input() label = '';
   @Input() characters = '';

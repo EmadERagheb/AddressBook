@@ -8,6 +8,8 @@ namespace AddressBook.Domain.DTOs.Person
 {
     public class GetPagingPersonsDTO:BasePersonDTO
     {
+        public int Id { get; set; }
+
         public string Department { get; set; }
 
         public string Job { get; set; }

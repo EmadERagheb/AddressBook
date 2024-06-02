@@ -1,0 +1,4 @@
+<pagination *ngIf="totalItems&&pageSize" [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="pageSize"
+    [maxSize]="10" (pageChanged)="onPageChange($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+    lastText="&raquo;">
+</pagination>

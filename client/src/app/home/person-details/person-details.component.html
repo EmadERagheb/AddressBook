@@ -1,0 +1,142 @@
+<div class="container my-5 bootstrap snippets bootdey" *ngIf="person">
+    <div class="panel-body inf-content">
+        <div class="row " >
+            <div class="col-md-4">
+                <img alt="" style="width:600px;" title="" class="img-circle img-thumbnail isTooltip" [src]="person.imageUrl" data-original-title="Usuario"> 
+                
+            </div>
+            <div class="col-md-6">
+                <strong>Information</strong><br>
+                <div class="table-responsive">
+                <table class="table table-user-information">
+                    <tbody>
+                        <tr>        
+                            <td>
+                                <strong>
+                                    <span class="fa fa-asterisk text-primary"></span>
+                                    Identification                                                
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                                {{person.id}}     
+                            </td>
+                        </tr>
+                        <tr>    
+                            <td>
+                                <strong>
+                                    <span class="fa fa-user  text-primary"></span>    
+                                    Full Name                                                
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                                {{person.fullName}}     
+                            </td>
+                        </tr>
+    
+                        <tr>        
+                            <td>
+                                <strong>
+                                    <span class="bi bi-phone text-primary"></span> 
+                                    Mobile                                                
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                                {{person.mobile}} 
+                            </td>
+                        </tr>
+                        <tr>        
+                            <td>
+                                <strong>
+                                    <span class="bi-envelope-at text-primary"></span> 
+                                    Email                                                
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                                {{person.email}} 
+                            </td>
+                        </tr>
+                        <tr>        
+                            <td>
+                                <strong>
+                                    <span class="fa fa-birthday-cake text-primary"></span> 
+                                     Birth Date                                                
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                                {{person.birthDate|date:"d MMMM , y"}}
+                            </td>
+                        </tr>
+                        <tr>        
+                            <td>
+                                <strong>
+                                    <span class="bi bi-signpost-2 text-primary"></span> 
+                                    Street                                                
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                              {{person.street}}  
+                            </td>
+                        </tr>
+                        <tr>        
+                            <td>
+                                <strong>
+                                    <span class="fa fa-building text-primary"></span>
+                                    City                                                
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                               {{person.city}}
+                            </td>
+                        </tr>
+                        <tr>        
+                            <td>
+                                <strong>
+                                    <span class="fa fa-flag text-primary"></span>
+                                    State                                                
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                               {{person.state}}
+                            </td>
+                        </tr>
+                        <tr>        
+                            <td>
+                                <strong>
+                                    <span class="bi bi-mailbox text-primary"></span>
+                                    Postal Code                                                
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                               {{person.postalCode}}
+                            </td>
+                        </tr>
+                        <tr>        
+                            <td>
+                                <strong>
+                                    <span class="bi bi-person-gear text-primary"></span>
+                                    Job                                                
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                               {{person.job}}
+                            </td>
+                        </tr>
+                        <tr>        
+                            <td>
+                                <strong>
+                                    <span class="bi bi-building-fill-gear text-primary"></span>
+                                    Department                                                
+                                </strong>
+                            </td>
+                            <td class="text-primary">
+                               {{person.department}}
+                            </td>
+                        </tr>
+                                                         
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>                             

@@ -1,1 +1,68 @@
-<p>home works!</p>
+<div class="container mt-4">
+    <div class="row">
+        <!-- Filter -->
+        <section class=" col-3" *ngIf="departments.length>0 &&jobs.length>0 ">
+            <h5 class="text-warning ms-3">Sort</h5>
+            <select class="form-select mb-4" (change)="onSortSelected($event)">
+                <option *ngFor="let sortOption of sortingOptions" [value]="sortOption.value">{{sortOption.name}}
+                </option>
+            </select>
+            <h5 class="text-warning ms-3">Jobs</h5>
+            <ul class="list-group my-3">
+                <li class="list-group-item " *ngFor="let job of jobs" [class.active]="job.id==personsParams.jobId"
+                    [value]="job.id" (click)="onJobTypeSelected (job.id)">{{job.name}}</li>
+            </ul>
+            <h5 class="text-warning ms-3">Departments</h5>
+            <ul class="list-group my-3">
+                <li class="list-group-item " *ngFor="let department of departments" [value]="department.id"
+                    [class.active]="personsParams.departmentId==department.id"
+                    (click)="onDepartmentSelected(department.id,department.jobId)">{{department.name}}</li>
+            </ul>
+        </section>
+        <!-- Products -->
+        <section class="col-9">
+
+            <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+                <div class="d-flex justify-content-between">
+
+                    <app-text-input [feedBack]="false" (keyup.enter)="onSearch()" label="Full Name"
+                        [formControl]="searchForm.controls['fullName']"></app-text-input>
+
+
+                    <app-text-input [feedBack]="false" (keyup.enter)="onSearch()" label="Email"
+                        [formControl]="searchForm.controls['email']"></app-text-input>
+
+
+                    <app-text-input [feedBack]="false" type="date" (keyup.enter)="onSearch()" label="Birth Date"
+                        [formControl]="searchForm.controls['birthDate']"></app-text-input>
+
+
+                    <app-text-input [feedBack]="false" (keyup.enter)="onSearch()" label="City"
+                        [formControl]="searchForm.controls['city']"></app-text-input>
+
+                </div>
+
+            </form>
+            <div class=" d-flex justify-content-between my-2">
+                <app-paging-header [totalItems]="total" [pageIndex]="personsParams.pageIndex"
+                    [pageSize]="personsParams.pageSize">
+                </app-paging-header>
+                <div>
+                    <button class="btn btn-outline-primary mx-2" (click)="onSearch()">Search</button>
+                    <button class="btn btn-outline-success " (click)="onReset()">Reset</button>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="col" *ngFor="let person of persons">
+                    <app-person-card [person]="person"></app-person-card>
+                </div>
+            </div>
+            <div *ngIf="total>0" class="d-flex justify-content-center mt-3 mb-5">
+                <app-pager (pageChanges)="onPageChange($event)" [pageSize]="personsParams.pageSize"
+                    [totalItems]="total"></app-pager>
+            </div>
+
+        </section>
+    </div>
+</div>

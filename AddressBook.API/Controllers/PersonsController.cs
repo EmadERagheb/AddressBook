@@ -8,6 +8,7 @@ using AddressBook.Domain.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 using System.Linq.Expressions;
 
 namespace AddressBook.API.Controllers
@@ -16,15 +17,17 @@ namespace AddressBook.API.Controllers
     [ApiController]
     public class PersonsController : ControllerBase
     {
-       
+    
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
 
-        public PersonsController(AddressBookDbContext context, IUnitOfWork unitOfWork, IMapper mapper)
+        public PersonsController( IUnitOfWork unitOfWork, IMapper mapper,IConfiguration configuration)
         {
-          
+         
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _configuration = configuration;
         }
 
         // GET: api/Persons
@@ -42,9 +45,12 @@ namespace AddressBook.API.Controllers
             (!personsParams.JobId.HasValue || p.Department.Job.Id == personsParams.JobId);
             switch (personsParams.Sort)
             {
-                case "nameAsc":
-                    sortAsc = p => p.FullName;
+                case "cityAsc":
+                    sortAsc = p => p.City;
                     break;
+                case "cityDesc":
+                    sortDesc = p => p.City;
+                    break;        
                 case "nameDesc":
                     sortDesc = p => p.FullName;
                     break;
@@ -54,6 +60,7 @@ namespace AddressBook.API.Controllers
             }
             List<GetPagingPersonsDTO> persons = await _unitOfWork.Repository<Person>()
                 .GetAllAsync<GetPagingPersonsDTO>(personsParams.PageIndex, personsParams.PageSize, filter, sortAsc, sortDesc, p => p.Department, p => p.Department.Job);
+            if (persons is not null) persons.ForEach(e => e.ImageUrl = _configuration["APIURL"]+"//" + e.ImageUrl);
             var personsCount = await _unitOfWork.Repository<Person>().GetCountAsync(filter);
             return Ok(new Paging<GetPagingPersonsDTO>()
             {
@@ -76,7 +83,7 @@ namespace AddressBook.API.Controllers
             {
                 return NotFound(new APIResponse(404));
             }
-
+            person.ImageUrl = _configuration["APIURL"] + "//" + person.ImageUrl;
             return Ok(person);
         }
 
