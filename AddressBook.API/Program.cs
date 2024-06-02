@@ -17,7 +17,6 @@ namespace AddressBook.API
             builder.Services.AddSwaggerDocumentation();
             var app = builder.Build();
             app.UseStaticFiles();
-
             app.UseMiddleware<ExceptionMiddleWare>();
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseSwaggerDocumentation();

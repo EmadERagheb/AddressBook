@@ -45,6 +45,9 @@ namespace AddressBook.API.Extensions
             }
             );
 
+            services.AddCors(setupAction=>
+            setupAction.AddDefaultPolicy(configurePolicy =>
+                configurePolicy.AllowAnyMethod().AllowAnyHeader().WithOrigins(configuration["ClientsOrgins"])));
             return services;
 
         }
