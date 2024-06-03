@@ -13,7 +13,8 @@ namespace AddressBook.Domain.DTOs.Person
         public string FullName { get; set; }
 
         public string Mobile { get; set; }
-
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         public DateTime BirthDate { get; set; }

@@ -33,13 +33,17 @@ export class AdminService {
   updateUserImage(id: number, file: File) {
     const formData = new FormData();
     formData.append('imge', file, file.name);
-   
+
     let params = new HttpParams();
     params = params.append('id', id);
     return this.httpClient.post(
       this.personEndPointURL + '/updatePersonImage',
       formData,
-      {  params,responseType: 'text' }
+      { params, responseType: 'text' }
     );
+  }
+  isEmailExists(email: string) {
+    let params = new HttpParams().set('Email', email);
+    return this.httpClient.get(this.personEndPointURL+'/isMailExists',{params});
   }
 }

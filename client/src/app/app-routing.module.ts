@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, provideRouter, withHashLocation } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { PersonDetailsComponent } from './home/person-details/person-details.component';
+import { NotFoundComponent } from './core/not-found/not-found.component';
+import { ServerErrorComponent } from './core/server-error/server-error.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,10 +19,15 @@ const routes: Routes = [
     loadChildren: () =>
       import('./admin/admin.module').then((m) => m.AdminModule),
   },
+  { path: 'not-found', component: NotFoundComponent },
+  { path: 'server-error', component: ServerErrorComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [
+    provideRouter(routes, withHashLocation())
+  ]
 })
 export class AppRoutingModule {}

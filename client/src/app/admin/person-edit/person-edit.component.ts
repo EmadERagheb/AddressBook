@@ -58,7 +58,7 @@ export class PersonEditComponent implements OnInit {
       this.homeService.getPerson(+personId).subscribe({
         next: (data) => {
           this.person = data;
-          this.editPersonForm.patchValue({
+          this.editPersonForm.reset({
             ...data,
             departmentId: data.departmentId.toString(),
           });
@@ -102,7 +102,10 @@ export class PersonEditComponent implements OnInit {
       next: () => {
         if (personData.id)
           this.homeService.getPerson(personData.id).subscribe({
-            next: (data) => (this.person = data),
+            next: (data) => {
+              this.person = data;
+              this.loadPerson();
+            },
           });
       },
     });

@@ -96,6 +96,11 @@ namespace AddressBook.API.Controllers
             }
 
             Person person = await _unitOfWork.Repository<Person>().FindById(id);
+            if (await _unitOfWork.Repository<Person>().Exists(p => p.Email == putPersonDTO.Email&& p.Id!=id))
+            {
+                return BadRequest(new APIResponse(400, $"the mail {putPersonDTO.Email} is token "));
+            }
+
             _mapper.Map(putPersonDTO, person);
             _unitOfWork.Repository<Person>().Update(person);
 
@@ -122,12 +127,21 @@ namespace AddressBook.API.Controllers
             return NoContent();
         }
 
+        [HttpGet("isMailExists")]
+        public async  Task<bool> IsMailExists(string Email)
+        {
+           return await _unitOfWork.Repository<Person>().Exists(p=>p.Email == Email);
+        }
         // POST: api/Persons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<GetPersonDTO>> PostPerson(PostPersonDTO personDTO)
         {
 
+            if (await _unitOfWork.Repository<Person>().Exists(p => p.Email == personDTO.Email))
+            {
+                return BadRequest(new APIResponse(400, $"the mail {personDTO.Email} is token "));
+            }
             var person = _mapper.Map<Person>(personDTO);
             _unitOfWork.Repository<Person>().Add(person);
             int result = await _unitOfWork.CompleteAsync();
@@ -164,5 +178,6 @@ namespace AddressBook.API.Controllers
         {
             return await _unitOfWork.Repository<Person>().Exists(p => p.Id == id);
         }
+
     }
 }

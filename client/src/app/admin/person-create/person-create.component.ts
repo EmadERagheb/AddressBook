@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { AdminService } from '../admin.service';
 import { HomeService } from '../../home/home.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, Validators } from '@angular/forms';
 import { Department } from '../../shared/models/department';
 import { Job } from '../../shared/models/job';
 import { Person } from '../../shared/models/person';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { debounceTime, take, switchMap, map } from 'rxjs';
 
 @Component({
   selector: 'app-person-create',
@@ -30,7 +31,9 @@ export class PersonCreateComponent {
   createPersonForm = this.fb.group({
     fullName: ['', Validators.required],
     mobile: ['', [Validators.required, Validators.pattern('[0-9]{6,}')]],
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email],
+    [this.validateEmailIfExist()]
+  ],
     image: [null, Validators.required],
     birthDate: ['', Validators.required],
     street: ['', Validators.required],
@@ -40,6 +43,19 @@ export class PersonCreateComponent {
     departmentId: ['', [Validators.required, Validators.pattern('[1-9]{1,}')]],
     jobId: [0],
   });
+  validateEmailIfExist(): AsyncValidatorFn {
+    return (control: AbstractControl) => {
+      return control.valueChanges.pipe(
+        debounceTime(1000),
+        take(1),
+        switchMap(() => {
+          return this.adminService
+            .isEmailExists(control.value)
+            .pipe(map((result) => (result ? { emailExists: true } : null)));
+        })
+      );
+    };
+  }
   get departmentId() {
     return this.createPersonForm.get('departmentId');
   }

@@ -5,13 +5,17 @@ import { FooterComponent } from './footer/footer.component';
 import { SharedModule } from '../shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ServerErrorComponent } from './server-error/server-error.component';
 
 
 
 @NgModule({
   declarations: [
     NavBarComponent,
-    FooterComponent
+    FooterComponent,
+    NotFoundComponent,
+    ServerErrorComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +28,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   ],
   exports:[
     NavBarComponent,
-    FooterComponent
+    FooterComponent,
+    NgxSpinnerModule,
   ]
 })
 export class CoreModule { }
