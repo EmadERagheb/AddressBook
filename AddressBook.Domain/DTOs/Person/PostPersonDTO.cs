@@ -16,5 +16,8 @@ namespace AddressBook.Domain.DTOs.Person
         public string PostalCode { get; set; }
 
         public int? DepartmentId { get; set; }
+
+    
+      
     }
 }

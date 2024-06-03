@@ -1,65 +1,59 @@
-<div class="card my-5">
-    <div class="card-header"><i class="fa fa-user"></i> Details</div>
-    <div *ngIf="person" class="card-body">
+<div class="card my-5 col-9 mx-auto">
+    <div class="card-header"><i class="fa fa-user-plus"></i> Create</div>
+    <div class="card-body">
         <div class="container rounded bg-white mt-5 mb-5">
-            <div class="row">
-                <div class="col-md-4 border-right ">
-                    <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
-                            class="rounded-circle mt-5" width="150px"
-                            [src]="host+person.imageUrl"><span
-                            class="font-weight-bold">{{person.fullName}}</span>
-                            <span class="text-black-50">{{person.email}}</span><span>
-                                <input type="file" class="d-none" #fileInput (change)="onFileSelected($event)" accept=".png,.jpg">
-                                <button class="btn btn-primary mt-3" (click)="fileInput.click()">change picture</button>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-6 border-right ">
-                    <form [formGroup]="editPersonForm" (ngSubmit)="saveChanges()">
+            <div class="row text-center ">
+
+                <div class="col-md-6 mx-auto ">
+                    <form method="post" enctype="multipart/form-data" [formGroup]="createPersonForm" (ngSubmit)="saveChanges()">
                         <div class="p-3 py-5">
 
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h4 class="text-right">Profile Settings</h4>
+                                <h4 class="text-right">Create Profile</h4>
                             </div>
                             <div class="row mt-2">
                                 <app-text-input label="Full Name"
-                                    [formControl]="editPersonForm.controls['fullName']"></app-text-input>
+                                    [formControl]="createPersonForm.controls['fullName']"></app-text-input>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-12">
                                     <app-text-input label="Mobile"
-                                        [formControl]=" editPersonForm.controls['mobile']"></app-text-input>
+                                        [formControl]=" createPersonForm.controls['mobile']"></app-text-input>
                                 </div>
                                 <div class="col-md-12">
                                     <app-text-input label="Email"
-                                        [formControl]="editPersonForm.controls['email']"></app-text-input>
+                                        [formControl]="createPersonForm.controls['email']"></app-text-input>
                                 </div>
                                 <div class="col-md-12">
-                                    <app-text-input type="datetime" label="BirthDate"
-                                        [formControl]="editPersonForm.controls['birthDate']"></app-text-input>
+                                    <app-text-input type="date" label="BirthDate"
+                                        [formControl]="createPersonForm.controls['birthDate']"></app-text-input>
                                 </div>
                                 <div class="col-md-12">
                                     <app-text-input label="Street"
-                                        [formControl]="editPersonForm.controls['street']"></app-text-input>
+                                        [formControl]="createPersonForm.controls['street']"></app-text-input>
                                 </div>
                                 <div class="col-md-12">
                                     <app-text-input label="City"
-                                        [formControl]="editPersonForm.controls['city']"></app-text-input>
+                                        [formControl]="createPersonForm.controls['city']"></app-text-input>
                                 </div>
                                 <div class="col-md-12">
                                     <app-text-input label="State"
-                                        [formControl]="editPersonForm.controls['state']"></app-text-input>
+                                        [formControl]="createPersonForm.controls['state']"></app-text-input>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <app-text-input type="file" accept=".png,.jpg" label="image URL" (change)="onFileSelected($event)"
+                                        [formControl]="createPersonForm.controls['image']"></app-text-input>
 
                                 </div>
                                 <div class="col-md-12">
                                     <app-text-input label="Postal code"
-                                        [formControl]="editPersonForm.controls['postalCode']"></app-text-input>
+                                        [formControl]="createPersonForm.controls['postalCode']"></app-text-input>
                                 </div>
                                 <div class="col-md-12 mb-3 form-floating">
                                     <select (change)="onJobSelected()" name="jobId" class="form-select"
                                         formControlName="jobId" id="jobId">
-                                        <option *ngFor="let job of jobs" value="{{job.id}}"
-                                            [selected]="person.jobId==job.id">{{job.name}}</option>
+                                        <option *ngFor="let job of jobs" value="{{job.id}}">{{job.name}}</option>
                                     </select>
                                     <label class="ms-2 text-muted" for="job">Job</label>
                                 </div>
@@ -68,6 +62,7 @@
                                         [class.is-invalid]="departmentId?.invalid&&departmentId?.touched"
                                         id="departmentId" formControlName="departmentId">
                                         <option *ngFor="let department of departments"
+                                        
                                             value="{{department.id.toString()}}">{{department.name}}</option>
                                     </select>
                                     <label class="ms-2 text-muted" for="departmentId">Department</label>
@@ -81,11 +76,8 @@
                             </div>
 
                             <div class="mt-5 d-flex justify-content-between">
-                                <button class="btn btn-outline-primary "
-                                    [disabled]="!editPersonForm.valid||!editPersonForm.touched" type="submit">Save
-                                    Profile</button>
-                                <button class="btn btn-outline-info" routerLink="/admin/persons">Back To
-                                    Persons</button>
+                                <button class="btn btn-outline-primary " [disabled]="!createPersonForm.valid"type="submit">Create Profile</button>
+                                <button class="btn btn-outline-info" routerLink="/admin/persons">Back To Persons</button>
                             </div>
                         </div>
                     </form>

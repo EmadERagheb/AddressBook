@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PersonDetails } from '../../shared/models/person-details';
 import { HomeService } from '../home.service';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-person-details',
@@ -9,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './person-details.component.scss',
 })
 export class PersonDetailsComponent implements OnInit {
+  host=environment.apiUrl+'/'
   person?: PersonDetails;
   constructor(
     private homeService: HomeService,

@@ -7,6 +7,7 @@ import { PersonDetails } from '../../shared/models/person-details';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Department } from '../../shared/models/department';
 import { Job } from '../../shared/models/job';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-person-edit',
@@ -20,6 +21,8 @@ export class PersonEditComponent implements OnInit {
     private homeService: HomeService,
     private fb: FormBuilder
   ) {}
+  host = environment.apiUrl + '/';
+  selectedFile!: File;
   person?: PersonDetails;
   departments: Department[] = [];
   jobs: Job[] = [];
@@ -97,11 +100,23 @@ export class PersonEditComponent implements OnInit {
     } as Person;
     this.adminService.updatePerson(personData).subscribe({
       next: () => {
- 
-        this.homeService.getPerson(personData.id).subscribe({
-          next:(data)=>this.person=data
-        })
+        if (personData.id)
+          this.homeService.getPerson(personData.id).subscribe({
+            next: (data) => (this.person = data),
+          });
       },
     });
+  }
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    if (this.person?.id) {
+      this.adminService
+        .updateUserImage(this.person?.id, this.selectedFile)
+        .subscribe({
+          next: (res) => {
+            this.loadPerson();
+          },
+        });
+    }
   }
 }

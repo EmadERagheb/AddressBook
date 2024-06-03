@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.jpg
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -361,3 +362,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+AddressBook.API/wwwroot/images/8d01635d-1f30-41ad-8d88-831d6e169b91.png

@@ -4,6 +4,7 @@ import { PersonsComponent } from './persons/persons.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { PersonEditComponent } from './person-edit/person-edit.component';
+import { PersonCreateComponent } from './person-create/person-create.component';
 
 
 
@@ -11,12 +12,11 @@ import { PersonEditComponent } from './person-edit/person-edit.component';
 @NgModule({
   declarations: [
     PersonsComponent,
-    PersonEditComponent
+    PersonEditComponent,
+    PersonCreateComponent
   ],
   imports: [
     CommonModule,
-   
-    
     AdminRoutingModule,
     SharedModule
   ]

@@ -16,9 +16,9 @@ namespace AddressBook.Domain.DTOs.Person
 
         public string Email { get; set; }
 
-        public string ImageUrl { get; set; }
         public DateTime BirthDate { get; set; }
 
+        public string ImageUrl { get; set; }
 
 
     }
