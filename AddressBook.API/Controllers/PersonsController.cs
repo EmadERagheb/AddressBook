@@ -21,7 +21,7 @@ namespace AddressBook.API.Controllers
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _environment;
 
-        public PersonsController(IUnitOfWork unitOfWork, IMapper mapper, 
+        public PersonsController(IUnitOfWork unitOfWork, IMapper mapper,
             IConfiguration configuration,
             IWebHostEnvironment environment)
         {
@@ -100,7 +100,7 @@ namespace AddressBook.API.Controllers
             }
 
             Person person = await _unitOfWork.Repository<Person>().FindById(id);
-            if (await _unitOfWork.Repository<Person>().Exists(p => p.Email == putPersonDTO.Email&& p.Id!=id))
+            if (await _unitOfWork.Repository<Person>().Exists(p => p.Email == putPersonDTO.Email && p.Id != id))
             {
                 return BadRequest(new APIResponse(400, $"the mail {putPersonDTO.Email} is token "));
             }
@@ -132,9 +132,9 @@ namespace AddressBook.API.Controllers
         }
 
         [HttpGet("isMailExists")]
-        public async  Task<bool> IsMailExists(string Email)
+        public async Task<bool> IsMailExists(string Email)
         {
-           return await _unitOfWork.Repository<Person>().Exists(p=>p.Email == Email);
+            return await _unitOfWork.Repository<Person>().Exists(p => p.Email == Email);
         }
         // POST: api/Persons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -173,7 +173,19 @@ namespace AddressBook.API.Controllers
             }
 
             _unitOfWork.Repository<Person>().Delete(person);
-            await _unitOfWork.CompleteAsync();
+            try
+            {
+                var imagePath = person.ImageUrl;
+                await _unitOfWork.CompleteAsync();
+                DeleteImage(imagePath);
+
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new APIResponse(400, e.Message));
+
+            }
 
             return NoContent();
         }
@@ -187,15 +199,43 @@ namespace AddressBook.API.Controllers
         public string UploadImage(IFormFile image)
         {
             string uplaodFolder = Path.Combine(_environment.WebRootPath, "images");
-            string uniqueFileName= Guid.NewGuid().ToString() + "." + image.FileName.Split(".")[^1];
+            string uniqueFileName = Guid.NewGuid().ToString() + "." + image.FileName.Split(".")[^1];
             string filePath = Path.Combine(uplaodFolder, uniqueFileName);
             using (var filestream = new FileStream(filePath, FileMode.Create))
             {
                 image.CopyTo(filestream);
                 filestream.Close();
             }
-            return "images/"+uniqueFileName;
+            return "images/" + uniqueFileName;
 
+        }
+
+        private void DeleteImage(string imageUrl)
+        {
+            string filePath = Path.Combine(_environment.WebRootPath, imageUrl);
+            System.IO.File.Delete(filePath);
+        }
+        [HttpPost("updatePersonImage")]
+        public async Task<ActionResult> UpdateUserImage(int id, IFormFile image)
+        {
+            var person = await _unitOfWork.Repository<Person>().FindById(id);
+            if (person is null)
+            {
+                return NotFound(new APIResponse(404));
+            }
+            DeleteImage(person.ImageUrl);
+            person.ImageUrl = UploadImage(image);
+            _unitOfWork.Repository<Person>().Update(person);
+            try
+            {
+                await _unitOfWork.CompleteAsync();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(new APIResponse(400, e.Message));
+            }
+            return Ok("person image updated success");
         }
 
     }

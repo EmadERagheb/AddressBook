@@ -32,7 +32,7 @@ export class AdminService {
   }
   updateUserImage(id: number, file: File) {
     const formData = new FormData();
-    formData.append('imge', file, file.name);
+    formData.append('image', file, file.name);
 
     let params = new HttpParams();
     params = params.append('id', id);
