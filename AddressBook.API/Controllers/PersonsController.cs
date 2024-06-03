@@ -5,6 +5,7 @@ using AddressBook.Domain.Contracts;
 using AddressBook.Domain.DTOs.Person;
 using AddressBook.Domain.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -13,6 +14,7 @@ namespace AddressBook.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PersonsController : ControllerBase
     {
 
