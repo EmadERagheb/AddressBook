@@ -19,13 +19,17 @@ namespace AddressBook.API.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
-        public PersonsController(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration configuration)
+        public PersonsController(IUnitOfWork unitOfWork, IMapper mapper, 
+            IConfiguration configuration,
+            IWebHostEnvironment environment)
         {
 
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _configuration = configuration;
+            _environment = environment;
         }
 
         // GET: api/Persons
@@ -177,6 +181,21 @@ namespace AddressBook.API.Controllers
         private async Task<bool> PersonExists(int id)
         {
             return await _unitOfWork.Repository<Person>().Exists(p => p.Id == id);
+        }
+        [HttpPost("uploadImage")]
+
+        public string UploadImage(IFormFile image)
+        {
+            string uplaodFolder = Path.Combine(_environment.WebRootPath, "images");
+            string uniqueFileName= Guid.NewGuid().ToString() + "." + image.FileName.Split(".")[^1];
+            string filePath = Path.Combine(uplaodFolder, uniqueFileName);
+            using (var filestream = new FileStream(filePath, FileMode.Create))
+            {
+                image.CopyTo(filestream);
+                filestream.Close();
+            }
+            return "images/"+uniqueFileName;
+
         }
 
     }
