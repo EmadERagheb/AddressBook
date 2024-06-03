@@ -7,4 +7,6 @@ export interface PersonCard {
   email: string;
   birthDate:string
   imageUrl: string;
+  createdDate:string
+  updatedDate:string
 }

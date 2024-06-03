@@ -13,5 +13,9 @@ namespace AddressBook.Domain.DTOs.Person
         public string Department { get; set; }
 
         public string Job { get; set; }
+        public DateTime CreatedDate { get; set; }
+
+        public DateTime UpdatedDate { get; set; }
+
     }
 }

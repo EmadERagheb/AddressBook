@@ -1,0 +1,53 @@
+<div class="card my-4">
+    <div class="card-header">
+        <i class="fa fa-table me-1"></i>
+        Users
+    </div>
+    <div class="card-body">
+      
+        
+        <app-paging-header [totalItems]="total" [pageIndex]="personsParams.pageIndex"
+            [pageSize]="personsParams.pageSize">
+        </app-paging-header>
+        <div class="row mt-2">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="bg-light text-uppercase">
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Birth Date</th>
+                            <th>Created Date </th>
+                            <th>Modified Date </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let person  of persons">
+                            <td class="align-middle">{{person.fullName}}</td>
+                            <td class="align-middle">{{person.mobile}}</td>
+                            <td class="align-middle">{{person.email}}</td>
+                            <td class="align-middle">{{person.birthDate|date:"d MMMM , y"}}</td>
+                            <td class="align-middle">{{person.createdDate|date:"MMM d, y, h:mm:ss a"}}</td>
+                            <td class="align-middle">{{person.updatedDate|date:"MMM d, y, h:mm:ss a"}}</td>
+                            <td><a routerLink="/admin/persons/{{person.id}}" class="btn btn-info"><i
+                                        class="fa fa-edit"></i>Update</a>
+                            <button (click)="delete(person.id)"  class="ms-2 btn btn-danger"><i class="fa fa-trash"></i> Delete</button></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div *ngIf="total>0" class="d-flex justify-content-center mt-3 mb-5">
+            <app-pager (pageChanges)="onPageChange($event)" [pageSize]="personsParams.pageSize"
+                [totalItems]="total"></app-pager>
+        </div>
+
+
+
+
+    </div>
+</div>

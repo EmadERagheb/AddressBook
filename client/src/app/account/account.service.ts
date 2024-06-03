@@ -11,7 +11,7 @@ import { TokenDTO } from '../shared/models/token-dto';
   providedIn: 'root',
 })
 export class AccountService {
-  baseURL: string = environment.apiUrl + 'Accounts';
+  baseURL: string = environment.apiUrl + '/api/Accounts';
   private userSource = new ReplaySubject<null | User>(1);
   public userSource$ = this.userSource.asObservable();
   constructor(private httpClient: HttpClient, private router: Router) {}

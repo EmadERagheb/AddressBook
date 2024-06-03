@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
     this.homeService.getAllPersons(this.personsParams).subscribe({
       next: (response) => {
         this.persons = response.data;
+        
         this.total = response.count;
       },
     });

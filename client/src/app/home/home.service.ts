@@ -12,9 +12,9 @@ import { PersonDetails } from '../shared/models/person-details';
   providedIn: 'root',
 })
 export class HomeService {
-  private personEndPointURL: string = environment.apiUrl + 'Persons';
-  private jobEndPoint: string = environment.apiUrl + 'Jobs';
-  private DepartmentEndPoint: string = environment.apiUrl + 'Departments';
+  private personEndPointURL: string = environment.apiUrl+'/api/Persons';
+  private jobEndPoint: string = environment.apiUrl + '/api/Jobs';
+  private DepartmentEndPoint: string = environment.apiUrl + '/api/Departments';
 
   constructor(private httpClient: HttpClient) {}
   getAllPersons(personParams: PersonParams) {

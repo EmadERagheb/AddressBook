@@ -1,6 +1,5 @@
 ﻿using AddressBook.API.Errors;
 using AddressBook.API.QueryPrams;
-using AddressBook.Data.Contexts;
 using AddressBook.Data.Helper;
 using AddressBook.Domain.Contracts;
 using AddressBook.Domain.DTOs.Person;
@@ -8,7 +7,6 @@ using AddressBook.Domain.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 using System.Linq.Expressions;
 
 namespace AddressBook.API.Controllers
@@ -17,14 +15,14 @@ namespace AddressBook.API.Controllers
     [ApiController]
     public class PersonsController : ControllerBase
     {
-    
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
 
-        public PersonsController( IUnitOfWork unitOfWork, IMapper mapper,IConfiguration configuration)
+        public PersonsController(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration configuration)
         {
-         
+
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _configuration = configuration;
@@ -50,7 +48,7 @@ namespace AddressBook.API.Controllers
                     break;
                 case "cityDesc":
                     sortDesc = p => p.City;
-                    break;        
+                    break;
                 case "nameDesc":
                     sortDesc = p => p.FullName;
                     break;
@@ -60,7 +58,7 @@ namespace AddressBook.API.Controllers
             }
             List<GetPagingPersonsDTO> persons = await _unitOfWork.Repository<Person>()
                 .GetAllAsync<GetPagingPersonsDTO>(personsParams.PageIndex, personsParams.PageSize, filter, sortAsc, sortDesc, p => p.Department, p => p.Department.Job);
-            if (persons is not null) persons.ForEach(e => e.ImageUrl = _configuration["APIURL"]+"//" + e.ImageUrl);
+            //if (persons is not null) persons.ForEach(e => e.ImageUrl = _configuration["APIURL"] + "//" + e.ImageUrl);
             var personsCount = await _unitOfWork.Repository<Person>().GetCountAsync(filter);
             return Ok(new Paging<GetPagingPersonsDTO>()
             {
@@ -83,7 +81,7 @@ namespace AddressBook.API.Controllers
             {
                 return NotFound(new APIResponse(404));
             }
-            person.ImageUrl = _configuration["APIURL"] + "//" + person.ImageUrl;
+            //person.ImageUrl = _configuration["APIURL"] + "//" + person.ImageUrl;
             return Ok(person);
         }
 
@@ -96,24 +94,28 @@ namespace AddressBook.API.Controllers
             {
                 return BadRequest(new APIResponse(400));
             }
-            Person person = _mapper.Map<Person>(putPersonDTO);
+
+            Person person = await _unitOfWork.Repository<Person>().FindById(id);
+            _mapper.Map(putPersonDTO, person);
             _unitOfWork.Repository<Person>().Update(person);
 
 
             try
             {
-              await  _unitOfWork.CompleteAsync();
+                await _unitOfWork.CompleteAsync();
 
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
                 if (!await PersonExists(id))
                 {
                     return NotFound(new APIResponse(404));
                 }
+
+
                 else
                 {
-                    return BadRequest(new APIResponse(400));
+                    return BadRequest(new APIResponse(400, e.Message));
                 }
             }
 
@@ -123,7 +125,7 @@ namespace AddressBook.API.Controllers
         // POST: api/Persons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<GetPersonDTO>> PostPerson( PostPersonDTO personDTO)
+        public async Task<ActionResult<GetPersonDTO>> PostPerson(PostPersonDTO personDTO)
         {
 
             var person = _mapper.Map<Person>(personDTO);
@@ -131,15 +133,15 @@ namespace AddressBook.API.Controllers
             int result = await _unitOfWork.CompleteAsync();
             if (result > 0)
             {
-              
-                return CreatedAtAction("GetPerson",new {id=person.Id}, person);
+
+                return CreatedAtAction("GetPerson", new { id = person.Id }, person);
             }
             else
                 return BadRequest(new APIResponse(400, "cant create this person"));
 
 
-        }  
-       
+        }
+
 
         // DELETE: api/Persons/5
         [HttpDelete("{id}")]

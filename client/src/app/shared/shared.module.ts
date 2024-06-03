@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TextInputComponent } from './components/text-input/text-input.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PagerComponent } from './components/pager/pager.component';
 import { PagingHeaderComponent } from './components/paging-header/paging-header.component';
@@ -13,6 +13,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     RouterModule,
     PaginationModule.forRoot(),
     BsDropdownModule.forRoot(),
@@ -20,6 +21,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
   exports: [
     CommonModule,
     TextInputComponent,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule,
     PaginationModule,

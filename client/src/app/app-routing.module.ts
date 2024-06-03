@@ -11,7 +11,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./account/account.module').then((m) => m.AccountModule),
   },
-  {path: 'person/:id' , component:PersonDetailsComponent}
+  { path: 'person/:id', component: PersonDetailsComponent },
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./admin/admin.module').then((m) => m.AdminModule),
+  },
 ];
 
 @NgModule({

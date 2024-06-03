@@ -1,0 +1,94 @@
+<div class="card my-5">
+    <div class="card-header"><i class="fa fa-user"></i> Details</div>
+    <div *ngIf="person" class="card-body">
+        <div class="container rounded bg-white mt-5 mb-5">
+            <div class="row">
+                <div class="col-md-4 border-right ">
+                    <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
+                            class="rounded-circle mt-5" width="150px"
+                            src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
+                            class="font-weight-bold">{{person.fullName}}</span><span
+                            class="text-black-50">{{person.email}}</span><span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6 border-right ">
+                    <form [formGroup]="editPersonForm" (ngSubmit)="saveChanges()">
+                        <div class="p-3 py-5">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="text-right">Profile Settings</h4>
+                            </div>
+                            <div class="row mt-2">
+                                <app-text-input label="Full Name"
+                                    [formControl]="editPersonForm.controls['fullName']"></app-text-input>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <app-text-input label="Mobile"
+                                        [formControl]=" editPersonForm.controls['mobile']"></app-text-input>
+                                </div>
+                                <div class="col-md-12">
+                                    <app-text-input label="Email"
+                                        [formControl]="editPersonForm.controls['email']"></app-text-input>
+                                </div>
+                                <div class="col-md-12">
+                                    <app-text-input type="datetime" label="BirthDate"
+                                        [formControl]="editPersonForm.controls['birthDate']"></app-text-input>
+                                </div>
+                                <div class="col-md-12">
+                                    <app-text-input label="Street"
+                                        [formControl]="editPersonForm.controls['street']"></app-text-input>
+                                </div>
+                                <div class="col-md-12">
+                                    <app-text-input label="City"
+                                        [formControl]="editPersonForm.controls['city']"></app-text-input>
+                                </div>
+                                <div class="col-md-12">
+                                    <app-text-input label="State"
+                                        [formControl]="editPersonForm.controls['state']"></app-text-input>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <app-text-input label="Postal code"
+                                        [formControl]="editPersonForm.controls['postalCode']"></app-text-input>
+                                </div>
+                                <div class="col-md-12 mb-3 form-floating">
+                                    <select (change)="onJobSelected()" name="jobId" class="form-select"
+                                        formControlName="jobId" id="jobId">
+                                        <option *ngFor="let job of jobs" value="{{job.id}}"
+                                            [selected]="person.jobId==job.id">{{job.name}}</option>
+                                    </select>
+                                    <label class="ms-2 text-muted" for="job">Job</label>
+                                </div>
+                                <div class="form-floating mb-3 col-md-12">
+                                    <select class="form-select  " [class.is-valid]="departmentId?.valid"
+                                        [class.is-invalid]="departmentId?.invalid&&departmentId?.touched"
+                                        id="departmentId" formControlName="departmentId">
+                                        <option *ngFor="let department of departments"
+                                            value="{{department.id.toString()}}">{{department.name}}</option>
+                                    </select>
+                                    <label class="ms-2 text-muted" for="departmentId">Department</label>
+                                    <div [hidden]="departmentId?.valid||!departmentId?.touched ">
+                                        <span *ngIf="departmentId?.hasError('pattern')" class="text-danger">
+                                            please select department.
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="mt-5 d-flex justify-content-between">
+                                <button class="btn btn-outline-primary "
+                                   [disabled]="!editPersonForm.valid||!editPersonForm.touched"  type="submit">Save
+                                    Profile</button>
+                                    <button class="btn btn-outline-info" routerLink="/admin/persons">Back To Persons</button>
+                                </div>
+                        </div>
+                    </form>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>

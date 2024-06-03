@@ -1,16 +1,13 @@
-export interface PersonDetails {
-  id: number;
+export interface Person {
   fullName: string;
-  email: string;
   mobile: string;
+  email: string;
+  imageUrl: string;
   birthDate: string;
+  id: number;
   street: string;
   city: string;
   state: string;
   postalCode: string;
-  job: string;
-  jobId: number;
-  department: string;
   departmentId: number;
-  imageUrl: string;
 }
