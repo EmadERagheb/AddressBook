@@ -33,7 +33,7 @@
                             <td class="align-middle">{{person.updatedDate|date:"MMM d, y, h:mm:ss a"}}</td>
                             <td><a routerLink="/admin/persons/{{person.id}}" class="btn btn-info"><i
                                         class="fa fa-edit"></i>Update</a>
-                            <button (click)="delete(person.id)"  class="ms-2 btn btn-danger"><i class="fa fa-trash"></i> Delete</button></td>
+                            <button (click)="delete(person.id,person.fullName)"  class="ms-2 btn btn-danger"><i class="fa fa-trash"></i> Delete</button></td>
                         </tr>
 
                     </tbody>

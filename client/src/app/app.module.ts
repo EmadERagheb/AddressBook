@@ -6,6 +6,7 @@ import { CoreModule } from './core/core.module';
 import {  HttpClientModule } from '@angular/common/http';
 import { HomeModule } from './home/home.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CoreModule,
     HttpClientModule,
     HomeModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

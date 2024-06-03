@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../../home/home.service';
 import { PersonCard } from '../../shared/models/person-card';
 import { PersonParams } from '../../shared/models/person-params';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationModelComponent } from '../../shared/confirmation-model/confirmation-model.component';
+import { AdminService } from '../admin.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-persons',
@@ -9,13 +13,15 @@ import { PersonParams } from '../../shared/models/person-params';
   styleUrl: './persons.component.scss',
 })
 export class PersonsComponent implements OnInit {
-delete(arg0: number) {
-throw new Error('Method not implemented.');
-}
   persons: PersonCard[] = [];
   personsParams: PersonParams = new PersonParams();
   total = 0;
-  constructor(private homeService: HomeService) {}
+  constructor(
+    private homeService: HomeService,
+    private modelService: NgbModal,
+    private adminService: AdminService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.loadPersons();
@@ -33,5 +39,20 @@ throw new Error('Method not implemented.');
       this.personsParams.pageIndex = event;
       this.loadPersons();
     }
+  }
+  delete(id: number, fullName: string) {
+    let modal = ConfirmationModelComponent;
+    let modalRef = this.modelService.open(modal);
+    modalRef.componentInstance.userName = fullName;
+    modalRef.closed.subscribe({
+      next: (res) => {
+        this.adminService.deletePerson(id).subscribe({
+          next: () => {
+            this.loadPersons();
+            this.toastr.success('user deleted success', 'success');
+          },
+        });
+      },
+    });
   }
 }

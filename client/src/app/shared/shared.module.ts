@@ -7,9 +7,12 @@ import { PagerComponent } from './components/pager/pager.component';
 import { PagingHeaderComponent } from './components/paging-header/paging-header.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ConfirmationModelComponent } from './confirmation-model/confirmation-model.component';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
-  declarations: [TextInputComponent, PagerComponent, PagingHeaderComponent],
+  declarations: [TextInputComponent, PagerComponent, PagingHeaderComponent, ConfirmationModelComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -17,6 +20,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     RouterModule,
     PaginationModule.forRoot(),
     BsDropdownModule.forRoot(),
+    NgbModalModule,
   ],
   exports: [
     CommonModule,
@@ -28,6 +32,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     PagingHeaderComponent,
     PagerComponent,
     BsDropdownModule,
+    NgbModalModule,
   ],
 })
 export class SharedModule {}
