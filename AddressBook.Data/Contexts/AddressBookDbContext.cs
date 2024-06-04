@@ -1,4 +1,5 @@
-﻿using AddressBook.Domain.Models;
+﻿using AddressBook.Data.Configurations.AddressBook;
+using AddressBook.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -18,6 +19,9 @@ namespace AddressBook.Data.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly(), n => n.Namespace == "AddressBook.Data.Configurations.AddressBook");
+
+            base.OnModelCreating(modelBuilder);
+
         }
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {

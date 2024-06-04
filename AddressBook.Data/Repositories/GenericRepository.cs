@@ -94,6 +94,7 @@ namespace AddressBook.Data.Repositories
         }
         public void Update(T entity)
         {
+            //_context.Set<T>().Update(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
 

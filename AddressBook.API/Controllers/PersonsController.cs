@@ -1,11 +1,11 @@
 ﻿using AddressBook.API.Errors;
 using AddressBook.API.QueryPrams;
-using AddressBook.Data.Contexts;
 using AddressBook.Data.Helper;
 using AddressBook.Domain.Contracts;
 using AddressBook.Domain.DTOs.Person;
 using AddressBook.Domain.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -14,17 +14,24 @@ namespace AddressBook.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PersonsController : ControllerBase
     {
-       
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
-        public PersonsController(AddressBookDbContext context, IUnitOfWork unitOfWork, IMapper mapper)
+        public PersonsController(IUnitOfWork unitOfWork, IMapper mapper,
+            IConfiguration configuration,
+            IWebHostEnvironment environment)
         {
-          
+
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _configuration = configuration;
+            _environment = environment;
         }
 
         // GET: api/Persons
@@ -42,8 +49,11 @@ namespace AddressBook.API.Controllers
             (!personsParams.JobId.HasValue || p.Department.Job.Id == personsParams.JobId);
             switch (personsParams.Sort)
             {
-                case "nameAsc":
-                    sortAsc = p => p.FullName;
+                case "cityAsc":
+                    sortAsc = p => p.City;
+                    break;
+                case "cityDesc":
+                    sortDesc = p => p.City;
                     break;
                 case "nameDesc":
                     sortDesc = p => p.FullName;
@@ -54,6 +64,7 @@ namespace AddressBook.API.Controllers
             }
             List<GetPagingPersonsDTO> persons = await _unitOfWork.Repository<Person>()
                 .GetAllAsync<GetPagingPersonsDTO>(personsParams.PageIndex, personsParams.PageSize, filter, sortAsc, sortDesc, p => p.Department, p => p.Department.Job);
+            //if (persons is not null) persons.ForEach(e => e.ImageUrl = _configuration["APIURL"] + "//" + e.ImageUrl);
             var personsCount = await _unitOfWork.Repository<Person>().GetCountAsync(filter);
             return Ok(new Paging<GetPagingPersonsDTO>()
             {
@@ -76,66 +87,88 @@ namespace AddressBook.API.Controllers
             {
                 return NotFound(new APIResponse(404));
             }
-
+            //person.ImageUrl = _configuration["APIURL"] + "//" + person.ImageUrl;
             return Ok(person);
         }
 
         // PUT: api/Persons/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PutPerson(int id, PutPersonDTO putPersonDTO)
         {
             if (id != putPersonDTO.Id)
             {
                 return BadRequest(new APIResponse(400));
             }
-            Person person = _mapper.Map<Person>(putPersonDTO);
+
+            Person person = await _unitOfWork.Repository<Person>().FindById(id);
+            if (await _unitOfWork.Repository<Person>().Exists(p => p.Email == putPersonDTO.Email && p.Id != id))
+            {
+                return BadRequest(new APIResponse(400, $"the mail {putPersonDTO.Email} is token "));
+            }
+
+            _mapper.Map(putPersonDTO, person);
             _unitOfWork.Repository<Person>().Update(person);
 
 
             try
             {
-              await  _unitOfWork.CompleteAsync();
+                await _unitOfWork.CompleteAsync();
 
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
                 if (!await PersonExists(id))
                 {
                     return NotFound(new APIResponse(404));
                 }
+
+
                 else
                 {
-                    return BadRequest(new APIResponse(400));
+                    return BadRequest(new APIResponse(400, e.Message));
                 }
             }
 
             return NoContent();
         }
 
+        [HttpGet("isMailExists")]
+
+        public async Task<bool> IsMailExists(string Email)
+        {
+            return await _unitOfWork.Repository<Person>().Exists(p => p.Email == Email);
+        }
         // POST: api/Persons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<GetPersonDTO>> PostPerson( PostPersonDTO personDTO)
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult<GetPersonDTO>> PostPerson(PostPersonDTO personDTO)
         {
 
+            if (await _unitOfWork.Repository<Person>().Exists(p => p.Email == personDTO.Email))
+            {
+                return BadRequest(new APIResponse(400, $"the mail {personDTO.Email} is token "));
+            }
             var person = _mapper.Map<Person>(personDTO);
             _unitOfWork.Repository<Person>().Add(person);
             int result = await _unitOfWork.CompleteAsync();
             if (result > 0)
             {
-              
-                return CreatedAtAction("GetPerson",new {id=person.Id}, person);
+
+                return CreatedAtAction("GetPerson", new { id = person.Id }, person);
             }
             else
                 return BadRequest(new APIResponse(400, "cant create this person"));
 
 
-        }  
-       
+        }
+
 
         // DELETE: api/Persons/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeletePerson(int id)
         {
             var person = await _unitOfWork.Repository<Person>().FindById(id);
@@ -146,7 +179,19 @@ namespace AddressBook.API.Controllers
             }
 
             _unitOfWork.Repository<Person>().Delete(person);
-            await _unitOfWork.CompleteAsync();
+            try
+            {
+                var imagePath = person.ImageUrl;
+                await _unitOfWork.CompleteAsync();
+                DeleteImage(imagePath);
+
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new APIResponse(400, e.Message));
+
+            }
 
             return NoContent();
         }
@@ -155,5 +200,50 @@ namespace AddressBook.API.Controllers
         {
             return await _unitOfWork.Repository<Person>().Exists(p => p.Id == id);
         }
+        [HttpPost("uploadImage")]
+        [Authorize(Roles = "Administrator")]
+        public string UploadImage(IFormFile image)
+        {
+            string uplaodFolder = Path.Combine(_environment.WebRootPath, "images");
+            string uniqueFileName = Guid.NewGuid().ToString() + "." + image.FileName.Split(".")[^1];
+            string filePath = Path.Combine(uplaodFolder, uniqueFileName);
+            using (var filestream = new FileStream(filePath, FileMode.Create))
+            {
+                image.CopyTo(filestream);
+                filestream.Close();
+            }
+            return "images/" + uniqueFileName;
+
+        }
+
+        private void DeleteImage(string imageUrl)
+        {
+            string filePath = Path.Combine(_environment.WebRootPath, imageUrl);
+            System.IO.File.Delete(filePath);
+        }
+        [HttpPost("updatePersonImage")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult> UpdateUserImage(int id, IFormFile image)
+        {
+            var person = await _unitOfWork.Repository<Person>().FindById(id);
+            if (person is null)
+            {
+                return NotFound(new APIResponse(404));
+            }
+            DeleteImage(person.ImageUrl);
+            person.ImageUrl = UploadImage(image);
+            _unitOfWork.Repository<Person>().Update(person);
+            try
+            {
+                await _unitOfWork.CompleteAsync();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(new APIResponse(400, e.Message));
+            }
+            return Ok("person image updated success");
+        }
+
     }
 }

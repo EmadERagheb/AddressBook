@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AddressBook.Data.Contexts;
+﻿using AddressBook.Data.Contexts;
+using AddressBook.Domain.Contracts;
+using AddressBook.Domain.DTOs.Departments;
 using AddressBook.Domain.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AddressBook.API.Controllers
 {
@@ -16,16 +13,22 @@ namespace AddressBook.API.Controllers
     {
         private readonly AddressBookDbContext _context;
 
-        public DepartmentsController(AddressBookDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public DepartmentsController(AddressBookDbContext context, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _context = context;
+
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Departments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
+        public async Task<ActionResult<IEnumerable<GetDepartmentsDTO>>> GetDepartments(int? JobId)
         {
-            return await _context.Departments.ToListAsync();
+            return JobId is not null ? await _unitOfWork.Repository<Department>().GetAllAsync<GetDepartmentsDTO>(d => d.JobId == JobId) :
+                     await _unitOfWork.Repository<Department>().GetAllAsync<GetDepartmentsDTO>() ;
+
         }
 
         // GET: api/Departments/5
@@ -44,65 +47,65 @@ namespace AddressBook.API.Controllers
 
         // PUT: api/Departments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDepartment(int id, Department department)
-        {
-            if (id != department.Id)
-            {
-                return BadRequest();
-            }
+        //    [HttpPut("{id}")]
+        //    public async Task<IActionResult> PutDepartment(int id, Department department)
+        //    {
+        //        if (id != department.Id)
+        //        {
+        //            return BadRequest();
+        //        }
 
-            _context.Entry(department).State = EntityState.Modified;
+        //        _context.Entry(department).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DepartmentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //        try
+        //        {
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!DepartmentExists(id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
 
-            return NoContent();
-        }
+        //        return NoContent();
+        //    }
 
-        // POST: api/Departments
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Department>> PostDepartment(Department department)
-        {
-            _context.Departments.Add(department);
-            await _context.SaveChangesAsync();
+        //    // POST: api/Departments
+        //    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //    [HttpPost]
+        //    public async Task<ActionResult<Department>> PostDepartment(Department department)
+        //    {
+        //        _context.Departments.Add(department);
+        //        await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDepartment", new { id = department.Id }, department);
-        }
+        //        return CreatedAtAction("GetDepartment", new { id = department.Id }, department);
+        //    }
 
-        // DELETE: api/Departments/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDepartment(int id)
-        {
-            var department = await _context.Departments.FindAsync(id);
-            if (department == null)
-            {
-                return NotFound();
-            }
+        //    // DELETE: api/Departments/5
+        //    [HttpDelete("{id}")]
+        //    public async Task<IActionResult> DeleteDepartment(int id)
+        //    {
+        //        var department = await _context.Departments.FindAsync(id);
+        //        if (department == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-            _context.Departments.Remove(department);
-            await _context.SaveChangesAsync();
+        //        _context.Departments.Remove(department);
+        //        await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //        return NoContent();
+        //    }
 
-        private bool DepartmentExists(int id)
-        {
-            return _context.Departments.Any(e => e.Id == id);
-        }
+        //    private bool DepartmentExists(int id)
+        //    {
+        //        return _context.Departments.Any(e => e.Id == id);
+        //    }
     }
 }

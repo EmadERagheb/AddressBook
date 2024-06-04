@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace AddressBook.Data.Configurations.AddressBook
 {
+
     public class JobConfiguration : IEntityTypeConfiguration<Job>
     {
         public void Configure(EntityTypeBuilder<Job> builder)

@@ -1,0 +1,18 @@
+<div class="card h-100 shadow-sm" *ngIf="person" style="height: 100%; margin: 0; padding: 0;">
+  <div class="image position-relative" style="height: 60%; cursor: pointer; overflow: hidden; margin: 0; padding: 0;">
+    <img [src]="host+person.imageUrl" [alt]="person.fullName" class="bg-info img-fluid w-100 h-100" style="object-fit: cover;">
+    <div class="d-flex align-items-center justify-content-center hover-overlay position-absolute top-0 start-0 w-100 h-100">
+      <button class="btn btn-primary" [routerLink]="'/person/' + person.id"><i class="bi bi-ticket-detailed"></i> View</button>
+    </div>
+  </div>
+  <div class="card-body d-flex flex-column justify-content-end" style="flex: 1; margin: 0; padding: 10px;">
+    <a href="" class="text-decoration-none">
+      <h6 class="text-uppercase">{{person.fullName}}</h6>
+    </a>
+    <span class="mb-1 fw-bold"><i class="bi bi-envelope-at"></i> : {{person.email}}</span>
+    <span class="mb-1 fw-bold"><i class="bi bi-person-gear"></i> : {{person.job}}</span>
+    <span class="mb-1 fw-bold"><i class="bi bi-building-fill-gear"></i> : {{person.department}}</span>
+    <span class="mb-1 fw-bold"><i class="bi bi-phone"></i> : {{person.mobile}}</span>
+    <span class="mb-1 fw-bold"><i class="bi bi-cake2"></i> : {{person.birthDate | date:'d MMMM, y'}}</span>
+  </div>
+</div>

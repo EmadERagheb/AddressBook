@@ -41,7 +41,7 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
-              "node_modules/ngx-spinner/animations/ball-clip-rotate.css",
+              "node_modules/ngx-spinner/animations/ball-spin.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/styles.scss"
             ],

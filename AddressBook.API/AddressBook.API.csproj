@@ -20,4 +20,8 @@
     <ProjectReference Include="..\AddressBook.Data\AddressBook.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>
