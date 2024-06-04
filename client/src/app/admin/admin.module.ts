@@ -5,6 +5,8 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { PersonEditComponent } from './person-edit/person-edit.component';
 import { PersonCreateComponent } from './person-create/person-create.component';
+import { JobComponent } from './job/job.component';
+import { DepartmentComponent } from './department/department.component';
 
 
 
@@ -13,7 +15,9 @@ import { PersonCreateComponent } from './person-create/person-create.component';
   declarations: [
     PersonsComponent,
     PersonEditComponent,
-    PersonCreateComponent
+    PersonCreateComponent,
+    JobComponent,
+    DepartmentComponent
   ],
   imports: [
     CommonModule,

@@ -33,6 +33,17 @@ namespace AddressBook.Domain.ModelList
                 NormalizedUserName="sushussein@tamweely.com.eg".ToUpper(),
                 EmailConfirmed=true,
                 PasswordHash=(new PasswordHasher<ApplicationUser>()).HashPassword(null,"Pa$$word123@UAE"),
+            }  ,  
+            new ApplicationUser()
+            {
+                Id="9d5489cc-09aa-46b1-a580-f18ec1235874",
+                Email="admin.shussein@tamweely.com.eg",
+                NormalizedEmail="admin.shussein@tamweely.com.eg".ToUpper(),
+                UserName="admin.shussein@tamweely.com.eg",
+                DisplayName="Admin Sameh Hussein",
+                NormalizedUserName="admin.sushussein@tamweely.com.eg".ToUpper(),
+                EmailConfirmed=true,
+                PasswordHash=(new PasswordHasher<ApplicationUser>()).HashPassword(null,"Pa$$word123@Admin"),
             }
         };
     }

@@ -9,6 +9,7 @@ namespace AddressBook.Domain.DTOs.ApplicationUser
 {
     public class LoginDTO:BaseApplicationUserDTO
     {
-      
+        [Required]
+        public string Password { get; set; }
     }
 }

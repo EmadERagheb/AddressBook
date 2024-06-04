@@ -1,5 +1,5 @@
 export class PersonParams {
-  pageSize: number = 10;
+  pageSize: number =12;
   pageIndex: number = 1;
   sort: string = 'nameAsc';
   departmentId: number = 0;

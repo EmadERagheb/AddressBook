@@ -16,16 +16,21 @@
           <a class="nav-link" routerLinkActive="active" routerLink="/error-test">Link</a>
         </li>
       </ul>
-      <div class="btn-group" dropdown>
-        <button dropdownToggle  class="btn  btn-outline-primary dropdown-toggle" aria-controls="dropdown-basic">
-          Content Management <span class="caret"></span>
-        </button>
-        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-          <li role="menuitem"><a class="dropdown-item" routerLink="admin/persons">Persons</a></li>
-          <li role="menuitem"><a class="dropdown-item" routerLink="">Department</a></li>
-          <li role="menuitem"><a class="dropdown-item" routerLink="">Job</a></li>
-        </ul>
-      </div>
+      <ng-container *ngIf="(accountService.userSource$|async) !=null">
+      <ng-container *ngIf="accountService.userSource$|async as user">
+     
+        <div class="btn-group" dropdown  *ngIf="user.roles.includes('Administrator')">
+          <button dropdownToggle  class="btn  btn-outline-primary dropdown-toggle" aria-controls="dropdown-basic">
+            Content Management <span class="caret"></span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem"><a class="dropdown-item" routerLink="admin/persons">Persons</a></li>
+            <li role="menuitem"><a class="dropdown-item" routerLink="admin/departments">Department</a></li>
+            <li role="menuitem"><a class="dropdown-item" routerLink="admin/jobs">Job</a></li>
+          </ul>
+        </div>
+      </ng-container>
+      </ng-container>
     </div>
     <div class="d-flex">
       <ng-container *ngIf="(accountService.userSource$|async)==null">
@@ -34,7 +39,7 @@
       </ng-container>
       <ng-container *ngIf="accountService.userSource$|async as user">
         <span class="me-2 my-1"> Welcome {{user.displayName}}</span>
-        <button class="btn btn-outline-primary me-2">Logout</button>
+        <button class="btn btn-outline-primary me-2" (click)="accountService.logout()">Logout</button>
       </ng-container>
     </div>
   </div>

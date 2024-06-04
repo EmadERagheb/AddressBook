@@ -36,7 +36,10 @@ namespace AddressBook.Data.Repositories
                         UserId = user.Id,
                         DisplayName = user.DisplayName,
                         Token = await GenerateTokenAsync(user),
-                        RefreshToken = await GenerateRefreshTokenAsync(user)
+                        RefreshToken = await GenerateRefreshTokenAsync(user),
+                        Roles = await GetUserRoles(user)
+
+
                     };
                 }
             }
@@ -141,7 +144,8 @@ namespace AddressBook.Data.Repositories
                 UserId = user.Id,
                 DisplayName = user.DisplayName,
                 Token = await GenerateTokenAsync(user),
-                RefreshToken = await GenerateRefreshTokenAsync(user)
+                RefreshToken = await GenerateRefreshTokenAsync(user),
+                Roles = await GetUserRoles(user)
             };
 
 
@@ -157,10 +161,16 @@ namespace AddressBook.Data.Repositories
                     UserId = user.Id,
                     DisplayName = user.DisplayName,
                     Token = await GenerateTokenAsync(user),
-                    RefreshToken = await GenerateRefreshTokenAsync(user)
+                    RefreshToken = await GenerateRefreshTokenAsync(user),
+                    Roles = await GetUserRoles(user)
                 };
             }
             return null;
+        }
+
+        public async Task<IEnumerable<string>> GetUserRoles(ApplicationUser user)
+        {
+            return await _manager.GetRolesAsync(user);
         }
 
 

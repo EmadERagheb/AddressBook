@@ -94,6 +94,7 @@ namespace AddressBook.API.Controllers
         // PUT: api/Persons/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PutPerson(int id, PutPersonDTO putPersonDTO)
         {
             if (id != putPersonDTO.Id)
@@ -134,6 +135,7 @@ namespace AddressBook.API.Controllers
         }
 
         [HttpGet("isMailExists")]
+
         public async Task<bool> IsMailExists(string Email)
         {
             return await _unitOfWork.Repository<Person>().Exists(p => p.Email == Email);
@@ -141,6 +143,7 @@ namespace AddressBook.API.Controllers
         // POST: api/Persons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<GetPersonDTO>> PostPerson(PostPersonDTO personDTO)
         {
 
@@ -165,6 +168,7 @@ namespace AddressBook.API.Controllers
 
         // DELETE: api/Persons/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeletePerson(int id)
         {
             var person = await _unitOfWork.Repository<Person>().FindById(id);
@@ -197,7 +201,7 @@ namespace AddressBook.API.Controllers
             return await _unitOfWork.Repository<Person>().Exists(p => p.Id == id);
         }
         [HttpPost("uploadImage")]
-
+        [Authorize(Roles = "Administrator")]
         public string UploadImage(IFormFile image)
         {
             string uplaodFolder = Path.Combine(_environment.WebRootPath, "images");
@@ -218,6 +222,7 @@ namespace AddressBook.API.Controllers
             System.IO.File.Delete(filePath);
         }
         [HttpPost("updatePersonImage")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> UpdateUserImage(int id, IFormFile image)
         {
             var person = await _unitOfWork.Repository<Person>().FindById(id);

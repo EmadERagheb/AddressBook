@@ -1,7 +1,7 @@
 <div class="container mt-4">
     <div class="row">
         <!-- Filter -->
-        <section class=" col-3" *ngIf="departments.length>0 &&jobs.length>0 ">
+        <section class=" col-3 mb-5" *ngIf="departments.length>0 &&jobs.length>0 ">
             <h5 class="text-warning ms-3">Sort</h5>
             <select class="form-select mb-4" (change)="onSortSelected($event)">
                 <option *ngFor="let sortOption of sortingOptions" [value]="sortOption.value">{{sortOption.name}}

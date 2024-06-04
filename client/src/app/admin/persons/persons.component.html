@@ -1,11 +1,11 @@
-<div class="card my-4">
+<div class="card my-4 mb-4">
     <div class="card-header">
         <i class="fa fa-table me-1"></i>
         Users
     </div>
     <div class="card-body">
-      
-        
+
+
         <app-paging-header [totalItems]="total" [pageIndex]="personsParams.pageIndex"
             [pageSize]="personsParams.pageSize">
         </app-paging-header>
@@ -33,7 +33,9 @@
                             <td class="align-middle">{{person.updatedDate|date:"MMM d, y, h:mm:ss a"}}</td>
                             <td><a routerLink="/admin/persons/{{person.id}}" class="btn btn-info"><i
                                         class="fa fa-edit"></i>Update</a>
-                            <button (click)="delete(person.id,person.fullName)"  class="ms-2 btn btn-danger"><i class="fa fa-trash"></i> Delete</button></td>
+                                <button (click)="delete(person.id,person.fullName)" class="ms-2 btn btn-danger"><i
+                                        class="fa fa-trash"></i> Delete</button>
+                            </td>
                         </tr>
 
                     </tbody>
@@ -41,15 +43,16 @@
 
             </div>
         </div>
-        <div *ngIf="total>0" class="d-flex justify-content-center mt-3 mb-5">
+        <div *ngIf="total>0" class="d-flex justify-content-center mt-3 ">
             <app-pager (pageChanges)="onPageChange($event)" [pageSize]="personsParams.pageSize"
                 [totalItems]="total"></app-pager>
         </div>
 
 
 
-<div class="d-flex flex-row-reverse">
-    <button routerLink="/admin/create-person" type="button" class="btn btn-primary rounded-circle"><i class="fa fa-plus"></i></button>
-</div>
+        <div class="d-flex flex-row-reverse mb-5">
+            <button routerLink="/admin/create-person" type="button" class="btn btn-primary rounded-circle"><i
+                    class="fa fa-plus"></i></button>
+        </div>
     </div>
 </div>

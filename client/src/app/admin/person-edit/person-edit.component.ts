@@ -104,7 +104,10 @@ export class PersonEditComponent implements OnInit {
           this.homeService.getPerson(personData.id).subscribe({
             next: (data) => {
               this.person = data;
-              this.loadPerson();
+              this.editPersonForm.reset({
+                ...data,
+                departmentId: data.departmentId.toString(),
+              });
             },
           });
       },
