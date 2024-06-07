@@ -1,18 +1,17 @@
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AccountService } from '../../account/account.service';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+} from '@angular/common/http';
 import { Observable, take } from 'rxjs';
+import { AccountService } from '../../account/account.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
   token?: string;
   constructor(private accountService: AccountService) {}
-//write a comment for this 
 
   intercept(
     request: HttpRequest<unknown>,

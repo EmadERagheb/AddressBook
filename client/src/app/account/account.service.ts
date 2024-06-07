@@ -53,6 +53,7 @@ export class AccountService {
       );
   }
   logout() {
+    console.log("call logout")
     localStorage.removeItem('token');
     localStorage.removeItem('refresh-token');
     this.userSource.next(null);
@@ -72,7 +73,7 @@ export class AccountService {
       .post<User>(`${this.baseURL}/isValidRefreshToken`, tokenDto)
       .pipe(
         map((user) => {
-          
+          this.userSource.next(user);
          
           localStorage.setItem('token', user.token);
           localStorage.setItem('refresh-token', user.refreshToken);
@@ -81,6 +82,7 @@ export class AccountService {
           return user;
         }),
         catchError((error) => {
+          console.log("can't verify refreshToken")
           localStorage.clear();
           return throwError(() => new Error(error.message));
         })

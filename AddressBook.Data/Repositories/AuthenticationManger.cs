@@ -85,7 +85,7 @@ namespace AddressBook.Data.Repositories
             //build Token 
             var token = new JwtSecurityToken(
               issuer: _configuration["JWTSettings:Issuer"],
-              expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(_configuration["JWTSettings:DurationInMinutes"])),
+              expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["JWTSettings:DurationInMinutes"])),
               audience: _configuration["JWTSettings:Audience"],
               claims: claims,
               signingCredentials: credientials
@@ -130,8 +130,8 @@ namespace AddressBook.Data.Repositories
             }
 
 
-            var expiretime = _context.UserTokens.FirstOrDefault(q => q.UserId == user.Id).ExpireTime;
-            if (expiretime < DateTime.UtcNow)
+            //var expiretime = _context.UserTokens.FirstOrDefault(q => q.UserId == user.Id).ExpireTime;
+            if (row.ExpireTime < DateTime.UtcNow)
             {
                 await _manager.RemoveAuthenticationTokenAsync(user, _configuration["JWTSettings:Issuer"], "RefreshToken");
 

@@ -49,7 +49,7 @@ export class PersonEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPerson();
-
+    this.loadDepartments();
     this.loadJob();
   }
   loadPerson() {
@@ -62,7 +62,6 @@ export class PersonEditComponent implements OnInit {
             ...data,
             departmentId: data.departmentId.toString(),
           });
-          this.loadDepartments();
         },
       });
   }

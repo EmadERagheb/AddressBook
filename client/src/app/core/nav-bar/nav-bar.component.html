@@ -1,46 +1,37 @@
-<nav class=" navbar navbar-expand-lg  border-bottom ">
 
-  <img src="assets\logo.png" alt="logo" width="75">
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse d-flex justify-content-between " id="navbarSupportedContent">
-    <div></div>
-    <div class="d-flex justify-content-between">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" routerLink="/home">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="/error-test">Link</a>
-        </li>
-      </ul>
-      <ng-container *ngIf="(accountService.userSource$|async) !=null">
-      <ng-container *ngIf="accountService.userSource$|async as user">
-     
-        <div class="btn-group" dropdown  *ngIf="user.roles.includes('Administrator')">
-          <button dropdownToggle  class="btn  btn-outline-primary dropdown-toggle" aria-controls="dropdown-basic">
-            Content Management <span class="caret"></span>
-          </button>
-          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-            <li role="menuitem"><a class="dropdown-item" routerLink="admin/persons">Persons</a></li>
-            <li role="menuitem"><a class="dropdown-item" routerLink="admin/departments">Department</a></li>
-            <li role="menuitem"><a class="dropdown-item" routerLink="admin/jobs">Job</a></li>
-          </ul>
-        </div>
-      </ng-container>
-      </ng-container>
-    </div>
-    <div class="d-flex">
-      <ng-container *ngIf="(accountService.userSource$|async)==null">
-
-        <button class="btn btn-outline-success me-2" routerLink="account/login">Login</button>
-      </ng-container>
-      <ng-container *ngIf="accountService.userSource$|async as user">
-        <span class="me-2 my-1"> Welcome {{user.displayName}}</span>
-        <button class="btn btn-outline-primary me-2" (click)="accountService.logout()">Logout</button>
-      </ng-container>
-    </div>
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between  border-bottom">
+  <div class="col-md-3 ">
+    <a routerLink="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+      <img src="assets\logo.png" alt="logo" width="75">
+    </a>
   </div>
-</nav>
+  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+    <li><a class="nav-link px-2  " routerLinkActive="text-dark" [routerLinkActiveOptions]="{exact:true}"
+        routerLink="/home">Home</a></li>
+    <li><a class="nav-link px-2 " routerLinkActive="text-dark" routerLink="/error-test">Errors Test</a></li>
+    <ng-container *ngIf="accountService.userSource$|async as user">
+      <li class="nav-item dropdown" *ngIf="user?.roles?.includes('Administrator')">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Content Management
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" routerLink="admin/persons">Persons</a></li>
+          <li><a class="dropdown-item" routerLink="admin/departments">Department</a></li>
+          <li><a class="dropdown-item" routerLink="admin/jobs">Job</a></li>
+        </ul>
+      </li>
+    </ng-container>
+  </ul>
+
+  <div class="col-md-3 text-end py-3 ">
+    <ng-container *ngIf="(accountService.userSource$|async)==null">
+    <button type="button" class="btn btn-outline-primary me-2">Login</button>
+    </ng-container>
+    <ng-container *ngIf="accountService.userSource$|async as user">
+      <button  class="btn btn-outline-primary border-0 " style="cursor:default;"> Welcome {{user.displayName}}</button>
+      <button type="button" class="mx-2 btn btn-outline-primary " (click)="accountService.logout()">Logout</button>
+      </ng-container>
+  </div>
+</header>
+
+
