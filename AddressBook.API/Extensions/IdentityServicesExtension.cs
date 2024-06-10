@@ -16,7 +16,7 @@ namespace AddressBook.API.Extensions
         {
             services.AddDbContext<AddressBookIdentityDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("IdentityDefaultConnection"),
+                options.UseSqlServer(configuration.GetConnectionString("Identity"),
                     setup => setup.CommandTimeout(30).EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(5), errorNumbersToAdd: null))
                 .LogTo(Console.WriteLine, LogLevel.Information);
                 if (environment.IsDevelopment())

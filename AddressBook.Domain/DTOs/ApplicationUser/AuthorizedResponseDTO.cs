@@ -14,5 +14,7 @@ namespace AddressBook.Domain.DTOs.ApplicationUser
         public string Token { get; set; }
 
         public string RefreshToken { get; set; }
+
+        public IEnumerable<string> Roles { get; set;  } = new List<string>();
     }
 }

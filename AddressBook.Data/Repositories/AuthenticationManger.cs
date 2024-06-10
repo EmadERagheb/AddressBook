@@ -36,7 +36,10 @@ namespace AddressBook.Data.Repositories
                         UserId = user.Id,
                         DisplayName = user.DisplayName,
                         Token = await GenerateTokenAsync(user),
-                        RefreshToken = await GenerateRefreshTokenAsync(user)
+                        RefreshToken = await GenerateRefreshTokenAsync(user),
+                        Roles = await GetUserRoles(user)
+
+
                     };
                 }
             }
@@ -82,13 +85,12 @@ namespace AddressBook.Data.Repositories
             //build Token 
             var token = new JwtSecurityToken(
               issuer: _configuration["JWTSettings:Issuer"],
-              expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(_configuration["JWTSettings:DurationInMinutes"])),
+              expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["JWTSettings:DurationInMinutes"])),
               audience: _configuration["JWTSettings:Audience"],
               claims: claims,
               signingCredentials: credientials
               );
             return new JwtSecurityTokenHandler().WriteToken(token);
-
         }
         public async Task<string> GenerateRefreshTokenAsync(ApplicationUser user)
         {
@@ -112,6 +114,11 @@ namespace AddressBook.Data.Repositories
             {
                 return null;
             }
+            var issure = token.Claims.AsEnumerable().FirstOrDefault(q => q.Type == JwtRegisteredClaimNames.Iss)?.Value;
+            if (issure is null)
+            {
+                return null;
+            }
             var user = await _manager.FindByEmailAsync(email);
             if (user is null)
             {
@@ -119,30 +126,50 @@ namespace AddressBook.Data.Repositories
             }
             var row = _context.UserTokens.FirstOrDefault(q => q.UserId == user.Id);
 
-            var isValid = await _manager.VerifyUserTokenAsync(user, _configuration["JWTSettings:Issuer"], "RefreshToken", tokenDTO.RefreshToken);
-            if (!isValid)
+            if (row is not null && row.UserId == user.Id &&
+                issure == row.LoginProvider&&
+                row.Value==tokenDTO.RefreshToken&&
+                row.ExpireTime > DateTime.UtcNow)
             {
-                await _manager.RemoveAuthenticationTokenAsync(user, _configuration["JWTSettings:Issuer"], "RefreshToken");
-                return null;
+                return new AuthorizedResponseDTO
+                {
+                    UserId = user.Id,
+                    DisplayName = user.DisplayName,
+                    Token = await GenerateTokenAsync(user),
+                    RefreshToken = await GenerateRefreshTokenAsync(user),
+                    Roles = await GetUserRoles(user)
+                };
             }
+            await _manager.RemoveAuthenticationTokenAsync(user, _configuration["JWTSettings:Issuer"], "RefreshToken");
+
+            return null;
 
 
-            var expiretime = _context.UserTokens.FirstOrDefault(q => q.UserId == user.Id).ExpireTime;
-            if (expiretime < DateTime.UtcNow)
-            {
-                await _manager.RemoveAuthenticationTokenAsync(user, _configuration["JWTSettings:Issuer"], "RefreshToken");
+            //var isValid = await _manager.VerifyUserTokenAsync(user, _configuration["JWTSettings:Issuer"], "RefreshToken", tokenDTO.RefreshToken);
+            //if (!isValid)
+            //{
+            //    await _manager.RemoveAuthenticationTokenAsync(user, _configuration["JWTSettings:Issuer"], "RefreshToken");
+            //    return null;
+            //}
 
-                return null;
-            };
+
+            //var expiretime = _context.UserTokens.FirstOrDefault(q => q.UserId == user.Id).ExpireTime;
+            //if (row.ExpireTime < DateTime.UtcNow)
+            //{
+            //    await _manager.RemoveAuthenticationTokenAsync(user, _configuration["JWTSettings:Issuer"], "RefreshToken");
+
+            //    return null;
+            //};
 
 
-            return new AuthorizedResponseDTO
-            {
-                UserId = user.Id,
-                DisplayName = user.DisplayName,
-                Token = await GenerateTokenAsync(user),
-                RefreshToken = await GenerateRefreshTokenAsync(user)
-            };
+            //return new AuthorizedResponseDTO
+            //{
+            //    UserId = user.Id,
+            //    DisplayName = user.DisplayName,
+            //    Token = await GenerateTokenAsync(user),
+            //    RefreshToken = await GenerateRefreshTokenAsync(user),
+            //    Roles = await GetUserRoles(user)
+            //};
 
 
         }
@@ -157,10 +184,16 @@ namespace AddressBook.Data.Repositories
                     UserId = user.Id,
                     DisplayName = user.DisplayName,
                     Token = await GenerateTokenAsync(user),
-                    RefreshToken = await GenerateRefreshTokenAsync(user)
+                    RefreshToken = await GenerateRefreshTokenAsync(user),
+                    Roles = await GetUserRoles(user)
                 };
             }
             return null;
+        }
+
+        public async Task<IEnumerable<string>> GetUserRoles(ApplicationUser user)
+        {
+            return await _manager.GetRolesAsync(user);
         }
 
 

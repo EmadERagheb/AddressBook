@@ -28,9 +28,13 @@ namespace AddressBook.API.MiddleWares
                 _logger.LogError(ex, ex.Message);
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+
                 var respanse = _env.IsDevelopment() ?
                      new APIException((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString()) :
-                     new APIException((int)HttpStatusCode.InternalServerError);
+                     new APIException((int)HttpStatusCode.InternalServerError,details:"please contact us tech team");
+               
+
                 var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
                 var serilizeJsoResponsen = JsonSerializer.Serialize(respanse, jsonOptions);
                 await context.Response.WriteAsync(serilizeJsoResponsen);

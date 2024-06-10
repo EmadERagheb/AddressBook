@@ -1,9 +1,14 @@
-<div class="sticky-top">
-    <app-nav-bar></app-nav-bar>
-</div>
-<div class="container">
-    <router-outlet></router-outlet>
-</div>
-<div class="fixed-bottom">
-    <app-footer></app-footer>
-</div>
+<ngx-spinner type="ball-spin">
+    <h3>Loading...</h3>
+  </ngx-spinner>
+
+
+    <div class="sticky-top bg-white">
+        <app-nav-bar></app-nav-bar>
+    </div>
+    <div class="container h-100">
+        <router-outlet></router-outlet>
+    </div>
+    <div class="  bg-white ">
+        <app-footer></app-footer>
+    </div>

@@ -54,7 +54,7 @@ namespace AddressBook.Data.Migrations.AddressDbContext
 
                     b.HasIndex("JobId");
 
-                    b.ToTable("Departments", (string)null);
+                    b.ToTable("Departments");
 
                     b.HasData(
                         new
@@ -246,7 +246,7 @@ namespace AddressBook.Data.Migrations.AddressDbContext
 
                     b.HasKey("Id");
 
-                    b.ToTable("Jobs", (string)null);
+                    b.ToTable("Jobs");
 
                     b.HasData(
                         new
@@ -287,7 +287,7 @@ namespace AddressBook.Data.Migrations.AddressDbContext
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly>("BirthDate")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("date");
 
                     b.Property<string>("City")
@@ -349,19 +349,19 @@ namespace AddressBook.Data.Migrations.AddressDbContext
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Persons", (string)null);
+                    b.ToTable("Persons");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            BirthDate = new DateOnly(1985, 5, 20),
+                            BirthDate = new DateTime(1985, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Anytown",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1,
                             Email = "john.doe@example.com",
                             FullName = "John Doe",
-                            ImageUrl = "https://example.com/image1.jpg",
+                            ImageUrl = "images/m1.jpg",
                             Mobile = "1234567890",
                             PostalCode = "12345",
                             State = "Anystate",
@@ -371,13 +371,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 2,
-                            BirthDate = new DateOnly(1990, 7, 15),
+                            BirthDate = new DateTime(1990, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Othertown",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 2,
-                            Email = "jane.smith@example.com",
+                            Email = "Jane.Smith@example.com",
                             FullName = "Jane Smith",
-                            ImageUrl = "https://example.com/image2.jpg",
+                            ImageUrl = "images/w1.jpg",
                             Mobile = "0987654321",
                             PostalCode = "67890",
                             State = "Otherstate",
@@ -387,13 +387,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 3,
-                            BirthDate = new DateOnly(1982, 3, 10),
+                            BirthDate = new DateTime(1982, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Sometown",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 3,
                             Email = "alice.johnson@example.com",
                             FullName = "Alice Johnson",
-                            ImageUrl = "https://example.com/image3.jpg",
+                            ImageUrl = "images/7abe9bd1-76aa-4d8e-84b0-c63d9ad60750.jpg",
                             Mobile = "1122334455",
                             PostalCode = "11223",
                             State = "Somestate",
@@ -403,13 +403,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 4,
-                            BirthDate = new DateOnly(1978, 11, 25),
+                            BirthDate = new DateTime(1978, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Thistown",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 4,
                             Email = "bob.brown@example.com",
                             FullName = "Bob Brown",
-                            ImageUrl = "https://example.com/image4.jpg",
+                            ImageUrl = "images/m3.jpg",
                             Mobile = "2233445566",
                             PostalCode = "33445",
                             State = "Thistate",
@@ -419,13 +419,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 5,
-                            BirthDate = new DateOnly(1995, 2, 5),
+                            BirthDate = new DateTime(1995, 2, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Anycity",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 5,
                             Email = "charlie.davis@example.com",
                             FullName = "Charlie Davis",
-                            ImageUrl = "https://example.com/image5.jpg",
+                            ImageUrl = "images/w3.jpg",
                             Mobile = "3344556677",
                             PostalCode = "55667",
                             State = "Anystate",
@@ -435,13 +435,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 6,
-                            BirthDate = new DateOnly(1988, 12, 13),
+                            BirthDate = new DateTime(1988, 12, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Thiscity",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 6,
-                            Email = "diana.prince@example.com",
+                            Email = "images/w12.jpg",
                             FullName = "Diana Prince",
-                            ImageUrl = "https://example.com/image6.jpg",
+                            ImageUrl = "images/w4.jpg",
                             Mobile = "4455667788",
                             PostalCode = "44556",
                             State = "Thisstate",
@@ -451,13 +451,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 7,
-                            BirthDate = new DateOnly(1992, 8, 21),
+                            BirthDate = new DateTime(1992, 8, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Thatcity",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 7,
                             Email = "evan.white@example.com",
                             FullName = "Evan White",
-                            ImageUrl = "https://example.com/image7.jpg",
+                            ImageUrl = "images/pexels-kampus-7551590.jpg",
                             Mobile = "5566778899",
                             PostalCode = "55678",
                             State = "Thatstate",
@@ -467,13 +467,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 8,
-                            BirthDate = new DateOnly(1975, 4, 17),
+                            BirthDate = new DateTime(1975, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Thistown",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 8,
-                            Email = "fiona.green@example.com",
+                            Email = "Fiona.Green@example.com",
                             FullName = "Fiona Green",
-                            ImageUrl = "https://example.com/image8.jpg",
+                            ImageUrl = "images/w12.jpg",
                             Mobile = "6677889900",
                             PostalCode = "66789",
                             State = "Thistate",
@@ -483,13 +483,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 9,
-                            BirthDate = new DateOnly(1980, 6, 23),
+                            BirthDate = new DateTime(1980, 6, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Thiscity",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 9,
                             Email = "george.harris@example.com",
                             FullName = "George Harris",
-                            ImageUrl = "https://example.com/image9.jpg",
+                            ImageUrl = "images/m5.jpg",
                             Mobile = "7788990011",
                             PostalCode = "77890",
                             State = "Thistate",
@@ -499,13 +499,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 10,
-                            BirthDate = new DateOnly(1997, 9, 29),
+                            BirthDate = new DateTime(1997, 9, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Anycity",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 10,
                             Email = "hannah.clark@example.com",
                             FullName = "Hannah Clark",
-                            ImageUrl = "https://example.com/image10.jpg",
+                            ImageUrl = "images/w5.jpg",
                             Mobile = "8899001122",
                             PostalCode = "88901",
                             State = "Anystate",
@@ -515,13 +515,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 11,
-                            BirthDate = new DateOnly(1983, 11, 12),
+                            BirthDate = new DateTime(1983, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Somecity",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 11,
                             Email = "irene.black@example.com",
                             FullName = "Irene Black",
-                            ImageUrl = "https://example.com/image11.jpg",
+                            ImageUrl = "images/w6.jpg",
                             Mobile = "9900112233",
                             PostalCode = "99001",
                             State = "Somestate",
@@ -531,13 +531,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 12,
-                            BirthDate = new DateOnly(1987, 4, 8),
+                            BirthDate = new DateTime(1987, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Thatcity",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 11,
                             Email = "jack.white@example.com",
                             FullName = "Jack White",
-                            ImageUrl = "https://example.com/image12.jpg",
+                            ImageUrl = "images/m6.jpg",
                             Mobile = "1122334455",
                             PostalCode = "11223",
                             State = "Thatstate",
@@ -547,13 +547,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 13,
-                            BirthDate = new DateOnly(1992, 1, 15),
+                            BirthDate = new DateTime(1992, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Thistown",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 11,
                             Email = "kelly.brown@example.com",
                             FullName = "Kelly Brown",
-                            ImageUrl = "https://example.com/image13.jpg",
+                            ImageUrl = "images/w7.jpg",
                             Mobile = "2233445566",
                             PostalCode = "33445",
                             State = "Thistate",
@@ -563,13 +563,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 14,
-                            BirthDate = new DateOnly(1995, 5, 20),
+                            BirthDate = new DateTime(1995, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Thatcity",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 4,
                             Email = "liam.blue@example.com",
                             FullName = "Liam Blue",
-                            ImageUrl = "https://example.com/image14.jpg",
+                            ImageUrl = "images/w8.jpg",
                             Mobile = "3344556677",
                             PostalCode = "44556",
                             State = "Thatstate",
@@ -579,13 +579,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 15,
-                            BirthDate = new DateOnly(1989, 7, 22),
+                            BirthDate = new DateTime(1989, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Thistown",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 5,
                             Email = "mia.green@example.com",
                             FullName = "Mia Green",
-                            ImageUrl = "https://example.com/image15.jpg",
+                            ImageUrl = "images/c08308c3-4357-46a8-b9ad-6d892790c6f3.jpg",
                             Mobile = "4455667788",
                             PostalCode = "55667",
                             State = "Thistate",
@@ -595,13 +595,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 16,
-                            BirthDate = new DateOnly(1984, 9, 11),
+                            BirthDate = new DateTime(1984, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Somecity",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 6,
                             Email = "noah.red@example.com",
                             FullName = "Noah Red",
-                            ImageUrl = "https://example.com/image16.jpg",
+                            ImageUrl = "images/w9.jpg",
                             Mobile = "5566778899",
                             PostalCode = "66778",
                             State = "Somestate",
@@ -611,13 +611,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 17,
-                            BirthDate = new DateOnly(1991, 6, 30),
+                            BirthDate = new DateTime(1991, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Thistown",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 7,
                             Email = "olivia.purple@example.com",
                             FullName = "Olivia Purple",
-                            ImageUrl = "https://example.com/image17.jpg",
+                            ImageUrl = "images/w10.jpg",
                             Mobile = "6677889900",
                             PostalCode = "77889",
                             State = "Thistate",
@@ -627,13 +627,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 18,
-                            BirthDate = new DateOnly(1980, 12, 2),
+                            BirthDate = new DateTime(1980, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Thistown",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 14,
                             Email = "paul.yellow@example.com",
                             FullName = "Paul Yellow",
-                            ImageUrl = "https://example.com/image18.jpg",
+                            ImageUrl = "images/m7.jpg",
                             Mobile = "7788990011",
                             PostalCode = "88990",
                             State = "Thistate",
@@ -643,13 +643,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 19,
-                            BirthDate = new DateOnly(1994, 3, 7),
+                            BirthDate = new DateTime(1994, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Somecity",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 18,
                             Email = "quinn.orange@example.com",
                             FullName = "Quinn Orange",
-                            ImageUrl = "https://example.com/image19.jpg",
+                            ImageUrl = "images/w11.jpg",
                             Mobile = "8899001122",
                             PostalCode = "99011",
                             State = "Somestate",
@@ -659,13 +659,13 @@ namespace AddressBook.Data.Migrations.AddressDbContext
                         new
                         {
                             Id = 20,
-                            BirthDate = new DateOnly(1986, 8, 18),
+                            BirthDate = new DateTime(1986, 8, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Anytown",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 20,
                             Email = "ruby.pink@example.com",
                             FullName = "Ruby Pink",
-                            ImageUrl = "https://example.com/image20.jpg",
+                            ImageUrl = "images/m8.jpg",
                             Mobile = "9900112233",
                             PostalCode = "12355",
                             State = "Anystate",

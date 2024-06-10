@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AddressBook.Data.Configurations.AddressBook
+
+
 {
     public class PersonConfiguration : IEntityTypeConfiguration<Person>
     {

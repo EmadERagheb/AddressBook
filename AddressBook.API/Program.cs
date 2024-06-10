@@ -1,12 +1,14 @@
 
 using AddressBook.API.Extensions;
 using AddressBook.API.MiddleWares;
+using AddressBook.Data.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace AddressBook.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             // Add services to the container.
@@ -26,6 +28,32 @@ namespace AddressBook.API
             app.UseAuthorization();
             app.MapControllers();
 
+            #region Insure DataBase Exists And Seeds Before Run Application
+            if (app.Environment.IsProduction())
+            {
+
+                using var scope = app.Services.CreateScope();
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<AddressBookDbContext>();
+                var identitycontext = services.GetRequiredService<AddressBookIdentityDbContext>();
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                try
+                {
+
+                    await context.Database.MigrateAsync();
+                    await identitycontext.Database.MigrateAsync();
+                    logger.LogInformation("migration run success");
+
+                }
+                catch (Exception ex)
+                {
+
+                    logger.LogError(ex, "An Error occurred During Migration");
+                }
+            }
+
+
+            #endregion
 
 
             app.Run();

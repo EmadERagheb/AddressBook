@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Observable, ReplaySubject, map, of } from 'rxjs';
+import { Observable, ReplaySubject, catchError, map, of, throwError } from 'rxjs';
 import { User } from '../shared/models/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -11,8 +11,8 @@ import { TokenDTO } from '../shared/models/token-dto';
   providedIn: 'root',
 })
 export class AccountService {
-  baseURL: string = environment.apiUrl + 'Accounts';
-  private userSource = new ReplaySubject<null | User>(1);
+  baseURL: string = environment.apiUrl + '/api/Accounts';
+  userSource = new ReplaySubject<null | User>(1);
   public userSource$ = this.userSource.asObservable();
   constructor(private httpClient: HttpClient, private router: Router) {}
   getCurrentUser(token: string | null) {
@@ -42,20 +42,24 @@ export class AccountService {
     }
   }
   login(login: Login) {
-    return this.httpClient.post<User>(this.baseURL + '/login', login).pipe(
-      map((user) => {
-        this.userSource.next(user);
-        localStorage.setItem('token', user.token);
-        localStorage.setItem('refresh-token', user.refreshToken);
-      })
-    );
+    return this.httpClient
+      .post<User>(this.baseURL + '/login', login)
+      .pipe(
+        map((user) => {
+          this.userSource.next(user);
+          localStorage.setItem('token', user.token);
+          localStorage.setItem('refresh-token', user.refreshToken);
+        })
+      );
   }
   logout() {
+    console.log("call logout")
     localStorage.removeItem('token');
     localStorage.removeItem('refresh-token');
     this.userSource.next(null);
     this.router.navigateByUrl('account/login');
   }
+
 
   isValidRefreshToken(): Observable<User | null> {
     const token = localStorage.getItem('token');
@@ -69,14 +73,19 @@ export class AccountService {
       .post<User>(`${this.baseURL}/isValidRefreshToken`, tokenDto)
       .pipe(
         map((user) => {
+          this.userSource.next(user);
+         
           localStorage.setItem('token', user.token);
           localStorage.setItem('refresh-token', user.refreshToken);
+          console.log("inside refreshfunctioon")
+         console.log (localStorage.getItem('token'))
           return user;
+        }),
+        catchError((error) => {
+          console.log("can't verify refreshToken")
+          localStorage.clear();
+          return throwError(() => new Error(error.message));
         })
-        // catchError((error) => {
-        //   localStorage.clear();
-        //   return throwError(() => new Error(error.message));
-        // })
       );
   }
 }

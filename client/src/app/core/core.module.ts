@@ -3,22 +3,35 @@ import { CommonModule } from '@angular/common';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { FooterComponent } from './footer/footer.component';
 import { SharedModule } from '../shared/shared.module';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ServerErrorComponent } from './server-error/server-error.component';
+import { ErrorTestComponent } from './error-test/error-test.component';
 
 
 
 @NgModule({
   declarations: [
     NavBarComponent,
-    FooterComponent
+    FooterComponent,
+    NotFoundComponent,
+    ServerErrorComponent,
+    ErrorTestComponent
   ],
   imports: [
     CommonModule,
-    SharedModule
-    
+    SharedModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
+    NgxSpinnerModule,
   ],
   exports:[
     NavBarComponent,
-    FooterComponent
+    FooterComponent,
+    NgxSpinnerModule,
   ]
 })
 export class CoreModule { }

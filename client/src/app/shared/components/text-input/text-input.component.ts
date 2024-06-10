@@ -1,4 +1,4 @@
-import { Component, Input, Self } from '@angular/core';
+import { Component, Input, Self, input } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,8 @@ import { FormControl, NgControl } from '@angular/forms';
   styleUrl: './text-input.component.scss'
 })
 export class TextInputComponent {
+  @Input() feedBack:boolean = true;
+  @Input() accept="*";
   @Input() type = 'text';
   @Input() label = '';
   @Input() characters = '';

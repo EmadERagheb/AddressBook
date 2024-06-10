@@ -5,7 +5,7 @@ namespace AddressBook.Domain.DTOs.Person
     public class PostPersonDTO : BasePersonDTO
     {
         //[Required]
-        public DateTime BirthDate { get; set; }
+     
         [Required]
         public string Street { get; set; }
         [Required]
@@ -16,5 +16,8 @@ namespace AddressBook.Domain.DTOs.Person
         public string PostalCode { get; set; }
 
         public int? DepartmentId { get; set; }
+
+    
+      
     }
 }
