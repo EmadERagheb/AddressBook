@@ -80,11 +80,6 @@ export class AccountService {
           console.log("inside refreshfunctioon")
          console.log (localStorage.getItem('token'))
           return user;
-        }),
-        catchError((error) => {
-          console.log("can't verify refreshToken")
-          localStorage.clear();
-          return throwError(() => new Error(error.message));
         })
       );
   }

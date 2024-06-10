@@ -8,8 +8,5 @@ import { AdminService } from '../../admin/admin.service';
   styleUrl: './nav-bar.component.scss',
 })
 export class NavBarComponent {
-  constructor(public accountService: AccountService,private adminServices:AdminService) {}
-  downLoadPersons() {
-    this.adminServices.exportPersonsToExcel().subscribe();
-  }
+
 }

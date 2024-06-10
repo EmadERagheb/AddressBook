@@ -8,7 +8,7 @@
             </div>
             <div class="col-md-6">
                 <div class="d-flex justify-content-between">
-                    <strong>Information</strong><br>
+                <strong>Information</strong><br>
                     <button class="btn btn-outline-primary" (click)="goBack()"> Go Back</button>
 
                 </div>
@@ -147,7 +147,7 @@
                 <div class="d-grid my-2" *ngIf="user.roles.includes('Administrator')">
                     <button  routerLink="/admin/persons/{{person.id}}" class="btn btn-outline-info border-0"><i
                     class="fa fa-edit"></i>Update</button>
-                </div>
+            </div>
             </ng-container>
         </div>
     </div>

@@ -1,5 +1,4 @@
-﻿//using AddressBook.Data.Configurations.AddressBook;
-using AddressBook.Domain.Models;
+﻿using AddressBook.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 

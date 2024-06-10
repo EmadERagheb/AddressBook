@@ -55,7 +55,6 @@ console.log(event.target.value)
 
   ngOnInit(): void {
     this.loadPerson();
-    this.loadDepartments();
     this.loadJob();
   }
   loadPerson() {
@@ -69,6 +68,7 @@ console.log(event.target.value)
             birthDate: new Date(data.birthDate),
             departmentId: data.departmentId.toString(),
           });
+          this.loadDepartments();
         },
       });
   }

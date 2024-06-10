@@ -1,27 +1,17 @@
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between   border-bottom">
+    <div class="col-md-3 ">
+      <a href="" class="d-inline-flex link-body-emphasis text-decoration-none">
+        <img src="assets\logo.png" alt="logo" width="75" >
+      </a>
+    </div>
 
-<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between  border-bottom">
-  <div class="col-md-3 ">
-    <a routerLink="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-      <img src="assets\logo.png" alt="logo" width="75">
-    </a>
-  </div>
-  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-    <li><a class="nav-link px-2  " routerLinkActive="text-dark" [routerLinkActiveOptions]="{exact:true}"
-        routerLink="/home">Home</a></li>
-    <li><a class="nav-link px-2 " routerLinkActive="text-dark" routerLink="/error-test">Errors Test</a></li>
-    <ng-container *ngIf="accountService.userSource$|async as user">
-      <li class="nav-item dropdown" *ngIf="user?.roles?.includes('Administrator')">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Content Management
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" routerLink="admin/persons">Persons</a></li>
-          <li><a class="dropdown-item" routerLink="admin/departments">Department</a></li>
-          <li><a class="dropdown-item" routerLink="admin/jobs">Job</a></li>
-        </ul>
-      </li>
-    </ng-container>
-  </ul>
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+      <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+      <li><a href="#" class="nav-link px-2">Features</a></li>
+      <li><a href="#" class="nav-link px-2">Pricing</a></li>
+      <li><a href="#" class="nav-link px-2">FAQs</a></li>
+      <li><a href="#" class="nav-link px-2">About</a></li>
+    </ul>
 
   <div class="col-md-3 text-end py-3 ">
     <ng-container *ngIf="(accountService.userSource$|async)==null">

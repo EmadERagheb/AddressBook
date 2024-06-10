@@ -4,6 +4,7 @@ using AddressBook.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AddressBook.Data.Migrations.IdentityDbContext
 {
     [DbContext(typeof(AddressBookIdentityDbContext))]
-    partial class AddressBookIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240604005749_AddAnotherApplicationUser")]
+    partial class AddAnotherApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,52 +98,52 @@ namespace AddressBook.Data.Migrations.IdentityDbContext
                         {
                             Id = "c0bsdf33-57b5-4b18-8878-d24bda5e8e5a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ecc138d0-1245-4ce7-810c-030c2de56e19",
-                            DisplayName = "Admin Emad",
+                            ConcurrencyStamp = "63c0038c-3525-44fe-a3f8-afdf098a2895",
+                            DisplayName = "Emad",
                             Email = "emaderagheb@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "EMADERAGHEB@GMAIL.COM",
                             NormalizedUserName = "EMADERAGHEB@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGx6g4EJna0wsb3CwWdxG3RL+n/ko7iKpOEm5t/sKfiUWiaZJMfgXI7MaQfM7zw7hA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJGfyGR1szAznzQNoxS4Wt0l5OllhhaU2KhLab0YS6if9NcpTYtgirSNBh1tbpxzUQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fa6beddb-9f52-421d-91c3-1d212dbaab25",
+                            SecurityStamp = "62219ff0-f4d8-455f-9e42-29199f7cac81",
                             TwoFactorEnabled = false,
                             UserName = "emaderagheb@gmail.com"
                         },
                         new
                         {
-                            Id = "c0bsdf33-57b5-4b18-2303-d24bda5e8e5a",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "11f76e0e-99fa-47c0-a04f-ab2b071acf36",
-                            DisplayName = "User Emad",
-                            Email = "emadeidragheb@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "EMADEIDRAGHEB@GMAIL.COM",
-                            NormalizedUserName = "EMADEIDRAGHEB@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO2bDQiTTHUt45AC0iz4ti/NifQbcRS9pkXnjV89gwL6hmEV0aau/DyBt3hPw0ASaQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "80695ae4-eec5-4833-9bb4-0a0580e0e4a1",
-                            TwoFactorEnabled = false,
-                            UserName = "emadeidragheb@gmail.com"
-                        },
-                        new
-                        {
                             Id = "9d5489cc-09aa-46b1-a580-f18ec0084946",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "57639d21-9fae-4427-ba94-dbc84acacc0a",
+                            ConcurrencyStamp = "e9352e53-6b7e-4e05-92e0-3202f8607aea",
                             DisplayName = "Sameh Hussein",
                             Email = "shussein@tamweely.com.eg",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "SHUSSEIN@TAMWEELY.COM.EG",
                             NormalizedUserName = "SUSHUSSEIN@TAMWEELY.COM.EG",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO5bPvjb1HiQm/pIsP78kmDzA7s+7jNsTiGN6Cw8SRlAzyKrC0w3/ckfoHihLaRWvQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELr5G6UxHJvOZ1f+Rc3kmCFTY1YB5/t5wfKlmAaZfj8WxbqJrqpFEV8ZqtK75rpHxw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8b431d85-a64e-4cbc-9c9e-5d6fa925b7ad",
+                            SecurityStamp = "e1d922cd-b103-40aa-9417-6137fdeea74a",
                             TwoFactorEnabled = false,
                             UserName = "shussein@tamweely.com.eg"
+                        },
+                        new
+                        {
+                            Id = "9d5489cc-09aa-46b1-a580-f18ec1235874",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "b7867ab5-f041-4159-adfa-61f920f8b371",
+                            DisplayName = "Admin Sameh Hussein",
+                            Email = "admin.shussein@tamweely.com.eg",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN.SHUSSEIN@TAMWEELY.COM.EG",
+                            NormalizedUserName = "ADMIN.SUSHUSSEIN@TAMWEELY.COM.EG",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKIJIV9tU9X6Zf2yF0m7uGD5cgjEzIZR+AGxUObYAClgpXHLcSN5t0qtJ5pNjDdTgA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "41a0dacf-d478-4af3-a7f3-c057c6bc00bc",
+                            TwoFactorEnabled = false,
+                            UserName = "admin.shussein@tamweely.com.eg"
                         });
                 });
 
@@ -298,11 +301,6 @@ namespace AddressBook.Data.Migrations.IdentityDbContext
                         {
                             UserId = "c0bsdf33-57b5-4b18-8878-d24bda5e8e5a",
                             RoleId = "ce78aeb6-7cd4-47db-a96a-598bef56a1d9"
-                        },
-                        new
-                        {
-                            UserId = "c0bsdf33-57b5-4b18-2303-d24bda5e8e5a",
-                            RoleId = "54364591-ad1f-42f9-ba53-2a25f8fb4dcf"
                         },
                         new
                         {

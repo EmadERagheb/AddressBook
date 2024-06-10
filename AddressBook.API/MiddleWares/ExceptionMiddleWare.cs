@@ -28,6 +28,12 @@ namespace AddressBook.API.MiddleWares
                 _logger.LogError(ex, ex.Message);
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                var respanse =
+                     new APIException((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString());
+                     
+                //var respanse = _env.IsDevelopment() ?
+                //     new APIException((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString()) :
+                //     new APIException((int)HttpStatusCode.InternalServerError);
 
 
                 var respanse = _env.IsDevelopment() ?
