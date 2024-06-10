@@ -1,0 +1,12 @@
+<div class="form-floating mb-3">
+    <input type={{type}} accept="{{accept}}" [formControl]="control" placeholder="{{label}}" class="form-control"
+        [ngClass]="(control.touched)&& feedBack? control.invalid ? 'is-invalid': 'is-valid':null">
+       <div *ngIf="control.status==='PENDING'" class="fa fa-spinner fa-spin loader" ></div> 
+    <label for="floatingInput">{{label}}</label>
+    <div *ngIf="control.errors?.['required']" class="invalid-feedback">please enter your {{label}}</div>
+    <div *ngIf="control.errors?.['minlength']" class="invalid-feedback">{{characters? characters:label + " length not suitable"}}</div>
+    <div *ngIf="control.errors?.['email']" class="invalid-feedback">please enter valid mail</div>
+    <div *ngIf="control.errors?.['emailExists']" class="invalid-feedback">the email address is taken</div>
+    <div *ngIf="control.errors?.['pattern']" class="invalid-feedback">{{patternHint?patternHint:label+" value doesn't match required pattern"}}</div>
+    <!-- the password expects at least 1 small-case letter, 1 Capital letter, 1 digit, 1 special character and the length should be between 6-10 characters. -->
+</div>
