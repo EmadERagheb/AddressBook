@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonDetails } from '../../shared/models/person-details';
 import { HomeService } from '../home.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { AccountService } from '../../account/account.service';
 import { Location } from '@angular/common';
@@ -11,9 +12,12 @@ import { Location } from '@angular/common';
   styleUrl: './person-details.component.scss',
 })
 export class PersonDetailsComponent implements OnInit {
+  host = environment.apiUrl + '/';
   person?: PersonDetails;
   constructor(
     private homeService: HomeService,
+    private activeRouter: ActivatedRoute,
+    public accountService: AccountService
   ) {}
   ngOnInit(): void {
     this.loadPerson();

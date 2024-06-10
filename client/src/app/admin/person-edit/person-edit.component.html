@@ -7,8 +7,10 @@
                     <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
                             class="rounded-circle mt-5" width="150px" [src]="host+person.imageUrl"><span
                             class="font-weight-bold">{{person.fullName}}</span>
-                            <span class="text-black-50">{{person.email}}</span><span>
-                                <button class="btn btn-primary mt-3" (click)="fileInput.click()">change picture</button>
+                        <span class="text-black-50">{{person.email}}</span><span>
+                            <input type="file" class="d-none" #fileInput (change)="onFileSelected($event)"
+                                accept=".png,.jpg">
+                            <button class="btn btn-primary mt-3" (click)="fileInput.click()">change picture</button>
                         </span>
                     </div>
                 </div>
@@ -32,8 +34,21 @@
                                     <app-text-input label="Email"
                                         [formControl]="editPersonForm.controls['email']"></app-text-input>
                                 </div>
+                                <div class="col-md-12 form-floating mb-3">
+                                    <input type="text" placeholder="Datepicker" class="form-control"
+                                        formControlName="birthDate" bsDatepicker [class.is-valid]="birthDate?.valid &&birthDate?.touched"
+                                        [class.is-invalid]="birthDate?.invalid&&birthDate?.touched">
+                                        <label class="ms-2 text-muted">BirthDate</label>
+                                        <div [hidden]="birthDate?.valid||!birthDate?.touched ">
+                                            <span *ngIf="birthDate?.hasError('required')" class="text-danger">mobile is
+                                                required.</span>
+                                       
+                                        </div>
+                                </div>
+                                <!-- <div class="col-md-12">
                                     <app-text-input type="datetime" label="BirthDate"
                                         [formControl]="editPersonForm.controls['birthDate']"></app-text-input>
+                                </div> -->
                                 <div class="col-md-12">
                                     <app-text-input label="Street"
                                         [formControl]="editPersonForm.controls['street']"></app-text-input>
@@ -60,6 +75,7 @@
                                     <label class="ms-2 text-muted" for="job">Job</label>
                                 </div>
                                 <div class="form-floating mb-3 col-md-12">
+                                    <select class="form-select  " [class.is-valid]="departmentId?.valid &&departmentId?.touched"
                                         [class.is-invalid]="departmentId?.invalid&&departmentId?.touched"
                                         id="departmentId" formControlName="departmentId">
                                         <option *ngFor="let department of departments"
@@ -77,6 +93,7 @@
 
                             <div class="mt-5 d-flex justify-content-between">
                                 <button class="btn btn-outline-primary "
+                                    [disabled]="!editPersonForm.valid||!editPersonForm.dirty" type="submit">Save
                                     Profile</button>
                                 <button class="btn btn-outline-info" routerLink="/admin/persons">Back To
                                     Persons</button>
